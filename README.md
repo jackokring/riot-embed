@@ -18,3 +18,7 @@ Looking at riot.js as a useful web technology, I decided to investigate the opti
     riot.mount('*')
   </script>
 ```
+
+In order to support AJAX and a DB, a method of site specific access control is required. As the server receives the full URL request, then this could be used as a part key, along with an optional script embedded part key, to control access. But this would have the unfortunate hack of just requesting using the correct domain, from another domain. It has to be login specific to protect private data.
+
+An end point token can be issued as a cookie, and activated using a password, generating a endpoint user token. Pay subscribed or higher qualification of the user tokens can be issued for higher features. A username can be added to allow end point user transfers.
