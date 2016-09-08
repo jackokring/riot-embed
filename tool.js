@@ -102,14 +102,12 @@ function bwt_encode(data) {
         memo.push(buff[p + size - 1]);
         return memo;
     }, []).join('');
-
-    return JSON.stingify({ top: top, data: work });
+    
+    return { top: top, data: work };
 }
 
-function bwt_decode(data) { //JSON
-    data = JSON.parse(data);
-    var top = data.top;
-    data = data.data;
+function bwt_decode(top, data) { //JSON
+
     var size = data.length;
     var idx = _.range(size).sort(function(x, y){
         var c = data[x].charCodeAt() - data[y].charCodeAt();
@@ -123,4 +121,87 @@ function bwt_decode(data) { //JSON
         p = idx[p];
         return memo;
     }, []).join('');
+}
+
+function tally_chars(data) {
+    return _.reduce(data.split(), function(memo, charAt) {
+        var num = charAt.charCodeAt();
+        memo[num]++;//increase
+    }, []);
+}
+
+function encode_tally(data) {
+    var acc = 0;
+    var out = [].push(data.length);
+    out.concat(_.reduce(data, function(memo, count) {
+        if(count == 0) {
+            acc++;
+        } else {
+            if(acc != 0) {
+                memo.push(0);
+                memo.push(acc);
+                acc = 0;
+            }
+            memo.push(count);//simple
+        }
+    }, []));
+    
+    if(acc != 0) {
+        out.push(0);
+        out.push(acc);//finalize
+    }
+    return out;
+}
+
+function decode_tally(data) {
+    var toggle = false;
+    return _.reduce(data, function(memo, count) {
+        if(toggle == true) {
+            toggle = false;
+            memo.concat(_.each(_.range(0, count), function() {
+                memo.push(0);
+            }));
+        } else {
+            if(count == 0) {
+                toggle = true;
+            } else {
+                memo.push(count);
+            }
+        }
+    }, []);   
+}
+
+function splice_string(counts, data) {
+    var acc = 0;
+    return _.reduce(counts, function(memo, count) {
+        memo.push(data.substring(acc, count + acc));
+        acc += count;
+    }, []);
+}
+
+//a packer and unpacker with good efficiency
+function packer(data) {
+    var bwt = bwt_encode(data);
+    var tally = tally_chars(data);
+    var mix = splice_string(tally, bwt.data);
+    
+    mix = _.map(mix, lzw_encode);
+    return JSON.stringify({
+        top: bwt.top,
+        /* tally: encode_tally(tally), */
+        mix: mix
+    });
+}
+
+function unpacker(data) {
+    var got = JSON.parse(data);
+    var top = got.top;
+    /* var tally = got.tally; */
+    var mix = got.mix;
+    
+    mix = _.map(mix, lzw_decode);
+    mix = _.reduce(mix, function(memo, lzw) {
+        memo += lzw;//concat
+    }, '');
+    return bwt_decode(top, data);
 }
