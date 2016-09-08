@@ -173,8 +173,11 @@ function decode_tally(data) {
 
 function splice_string(counts, data) {
     var acc = 0;
-    return _.reduce(counts, function(memo, count) {
-        memo.push(data.substring(acc, count + acc));
+    return _.reduce(counts, function(memo, count, key) {
+        if(count == 0) return;
+        memo.push(String.fromCharCode(key) + data.substring(acc, count + acc));
+        /* adds a seek char:
+        This assists in DB seek performance as it's the ordering char for the lzw block */
         acc += count;
     }, []);
 }
@@ -201,7 +204,8 @@ function unpacker(data) {
     
     mix = _.map(mix, lzw_decode);
     mix = _.reduce(mix, function(memo, lzw) {
-        memo += lzw;//concat
+        /* var key = lzw.charAt(0);//get seek char */
+        memo += lzw.substring(1, lzw.length);//concat
     }, '');
     return bwt_decode(top, data);
 }
