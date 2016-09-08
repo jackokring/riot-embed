@@ -88,10 +88,10 @@ function bwt_encode(data) {
     var size = data.length;
     var buff = data + data;
     var idx = _.range(size).sort(function(x, y){
-    for (var i = 0; i < size; i++) {
-        var r = buff[x + i].charCodeAt() - buff[y + i].charCodeAt();
-        if (r !== 0) return r;
-    }
+        for (var i = 0; i < size; i++) {
+            var r = buff[x + i].charCodeAt() - buff[y + i].charCodeAt();
+            if (r !== 0) return r;
+        }
     return 0;
     });
 
@@ -130,7 +130,7 @@ function tally_chars(data) {
     }, []);
 }
 
-function encode_tally(data) {
+/* function encode_tally(data) {
     var acc = 0;
     var out = [].push(data.length);
     out.concat(_.reduce(data, function(memo, count) {
@@ -169,7 +169,7 @@ function decode_tally(data) {
             }
         }
     }, []);   
-}
+} */
 
 function splice_string(counts, data) {
     var acc = 0;
