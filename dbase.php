@@ -10,6 +10,8 @@ define('DB_PREFIX', $table_prefix . $table_prefix);
 	../wp-config.php is one up in /var/www. Make sure you correct the first
 	include line for this. IMPORTANT!! */
 	
+header('Content-Type: text/javascript');
+//set a general javascript return type. This can auto encapsulate JSON.
 
 
 ?>
