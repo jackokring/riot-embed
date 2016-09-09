@@ -9,7 +9,8 @@
 // This does imply $$ is very sexy :D
 //===============================================
 
-__ = {
+var riotEmbed = {
+    var saveState = __; 
 
 //load JS and execute
 /* This has the effect of js inclusion, which must assign to a global
@@ -222,7 +223,14 @@ function unpacker(data) {
     return bwt_decode(top, data);
 }
 
+function noConflict() {
+    __ = saveState;
+    return this;//ok give it a new name
+}
+
 //============================================
 // And end the __ library
 //============================================
 }//close object
+
+var __ = riotEmbed;//activate
