@@ -85,10 +85,10 @@ function savePON(json, callback, load) {
     http.setRequestHeader("Content-type", "application/json");
     http.onreadystatechange = function() {//Call a function when the state changes.
         if(http.readyState == 4 && http.status == 200) {
-            callback && callback(JSON.parse(unpack(http.responseText)));
+            callback && callback(unpack(http.responseText));
         }
     }
-    http.send(pack(JSON.stringify(json)));
+    http.send(pack(json));
 }
 
 // LZW-compress a string
@@ -215,7 +215,7 @@ function splice(data) {
 
 //a packer and unpacker with good efficiency
 function pack(data) {
-    var bwt = encodeBWT(data);
+    var bwt = encodeBWT(JSON.stringify(data));
     var mix = splice(bwt.data);
     
     mix = _.map(mix, encodeLZW);
@@ -224,11 +224,10 @@ function pack(data) {
         /* tally: encode_tally(tally), */
         mix: mix
     });
-    return JSON.stringify(data);
+    return data;
 }
 
-function unpack(data) {
-    var got = JSON.parse(data);
+function unpack(got) {
     var top = got.top || 0;
     /* var tally = got.tally; */
     var mix = got.mix || [];
@@ -241,7 +240,7 @@ function unpack(data) {
         /* var key = lzw.charAt(0);//get seek char */
         memo += lzw.substring(1, lzw.length);//concat
     }, '');
-    return _.extendOwn(decodeBWT(top, mix), _.omit(got, 'top', 'mix'));
+    return _.extendOwn(JSON.parse(decodeBWT(top, mix)), _.omit(got, 'top', 'mix'));
 }
 
 function noConflict() {
