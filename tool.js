@@ -157,7 +157,7 @@ function encodeBWT(data) {
     return { top: top, data: work };
 }
 
-function bwt_decode(top, data) { //JSON
+function decodeBWT(top, data) { //JSON
 
     var size = data.length;
     var idx = _.range(size).sort(function(x, y){
@@ -174,14 +174,14 @@ function bwt_decode(top, data) { //JSON
     }, []).join('');
 }
 
-function tally_chars(data) {
+function tally(data) {
     return _.reduce(data.split(), function(memo, charAt) {
         var num = charAt.charCodeAt();
         memo[num]++;//increase
     }, []);
 }
 
-function splice_string(counts, data) {
+function splice(counts, data) {
     var acc = 0;
     return _.reduce(counts, function(memo, count, key) {
         if(count == 0) return;
@@ -193,12 +193,12 @@ function splice_string(counts, data) {
 }
 
 //a packer and unpacker with good efficiency
-function packer(data) {
-    var bwt = bwt_encode(data);
-    var tally = tally_chars(data);
-    var mix = splice_string(tally, bwt.data);
+function pack(data) {
+    var bwt = encodeBWT(data);
+    var tall = tally(data);
+    var mix = splice(tall, bwt.data);
     
-    mix = _.map(mix, lzw_encode);
+    mix = _.map(mix, encodeLZW);
     return JSON.stringify({
         top: bwt.top,
         /* tally: encode_tally(tally), */
@@ -206,13 +206,13 @@ function packer(data) {
     });
 }
 
-function unpacker(data) {
+function unpack(data) {
     var got = JSON.parse(data);
     var top = got.top;
     /* var tally = got.tally; */
     var mix = got.mix;
     
-    mix = _.map(mix, lzw_decode);
+    mix = _.map(mix, decodeLZW);
     mix.sort(function(a, b) {
         return a.charCodeAt(0) - b.charCodeAt(0);
     });
@@ -220,7 +220,7 @@ function unpacker(data) {
         /* var key = lzw.charAt(0);//get seek char */
         memo += lzw.substring(1, lzw.length);//concat
     }, '');
-    return bwt_decode(top, data);
+    return decodeBWT(top, data);
 }
 
 function noConflict() {
