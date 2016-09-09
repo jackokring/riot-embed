@@ -33,13 +33,13 @@ function hashCode(input) { //CH-32
     gen.zz = input.length;
     var acc = 0;
     gen = _.reduce(gen, function(memo, val) {
-        memo += String.fromCharCode((val << (acc % 17)) % 40763 + acc);
+        memo += String.fromCharCode((val << (acc % 17)) % 40763 + acc % 9473);
         acc += val % 98 + input.charCodeAt(acc * 65341 % input.length);
     }, '');
     gen = pack(gen);
     gen = _.reduce(gen.split(''), function(memo, val) {
         val = val.charCodeAt();
-        memo += String.fromCharCode((val << (acc % 18)) % 45563 + acc);
+        memo += String.fromCharCode((val << (acc % 18)) % 45563 + acc % 6923);
         acc += val % 37 + input.charCodeAt(acc * 63371 % input.length);;
     }, '');
     gen = btoa(encodeUTF(gen));
