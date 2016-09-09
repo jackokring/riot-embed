@@ -176,17 +176,15 @@ function decodeBWT(top, data) { //JSON
 
 function tally(data) {
     return _.reduce(data.split(), function(memo, charAt) {
-        var num = charAt.charCodeAt();
-        memo[num]++;//increase
-    }, []);
+        memo[charAt]++;//increase
+    }, {});
 }
 
 function splice(data) {
     var acc = 0;
     var counts = tally(data);
     return _.reduce(counts, function(memo, count, key) {
-        if(!count) return;
-        memo.push(String.fromCharCode(key) + data.substring(acc, count + acc));
+        memo.push(key + data.substring(acc, count + acc));
         /* adds a seek char:
         This assists in DB seek performance as it's the ordering char for the lzw block */
         acc += count;
