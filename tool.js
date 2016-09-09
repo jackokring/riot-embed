@@ -71,7 +71,7 @@ function urlJSON(json) {
 
 // LZW-compress a string
 function encodeLZW(s) {
-    s = encode_utf8(s);
+    s = encodeUTF(s);
     var dict = {};
     var data = (s + "").split("");
     var out = [];
@@ -100,7 +100,7 @@ function encodeLZW(s) {
 }
 
 // Decompress an LZW-encoded string
-function lzw_decode(s) {
+function decodeLZW(s) {
     var dict = {};
     var data = (s + "").split("");
     var currChar = data[0];
@@ -124,18 +124,18 @@ function lzw_decode(s) {
         }
         oldPhrase = phrase;
     }
-    return decode_utf8(out.join(""));
+    return decodeUTF(out.join(""));
 }
 
-function encode_utf8(s) {
+function encodeUTF(s) {
     return unescape(encodeURIComponent(s));
 }
 
-function decode_utf8(s) {
+function decodeUTF(s) {
     return decodeURIComponent(escape(s));
 }
 
-function bwt_encode(data) {
+function encodeBWT(data) {
     var size = data.length;
     var buff = data + data;
     var idx = _.range(size).sort(function(x, y){
