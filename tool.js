@@ -11,13 +11,13 @@
 
 var riotEmbed = {
     var saveState = __;
-    var url = 'http://localhost';
+    var url = 'http://localhost?';
 
 //====================================
 // PON handling
 //====================================
 function setURL(newUrl) {
-    url = newUrl;
+    url = newUrl + '?';
 }
 
 function appPON(json, hash, callback) {
@@ -60,6 +60,8 @@ function run(script, callback) {
     }
 }
 
+function fastHash(e){for(var r=0,i=0;i<e.length;i++)r=(r<<5)-r+e.charCodeAt(i),r&=r;return r};
+
 function loadPON(json, callback) {//gets packed object at url
     savePON(json, callback, true);
 }
@@ -75,8 +77,10 @@ function forkPON(json, exec, callback) {
 
 function savePON(json, callback, load) {
     var http = new XMLHttpRequest();
+    json = JSON.stringify(json);
     var rest = load ? "GET" : "PUT";
-    http.open(rest, url, true);
+    http.open(rest, url + fastHash(json.split(',')[0]), true);
+    //fastHash for page caches ... put record id first?? 
     //Send the proper header information along with the request
     http.setRequestHeader("Content-type", "application/json");
     http.onreadystatechange = function() {//Call a function when the state changes.
@@ -84,7 +88,7 @@ function savePON(json, callback, load) {
             callback && callback(JSON.parse(unpack(http.responseText)));
         }
     }
-    http.send(pack(JSON.stringify(json)));
+    http.send(pack(json));
 }
 
 // LZW-compress a string
