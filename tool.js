@@ -16,6 +16,27 @@ function play_js(script) {
     return script;//for chaining!!
 }
 
+function load_unpacker(url, callback) {//gets packed object at url
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            callback(unpacker(this.responseText));
+        }
+    }
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+}
+
+function play_load_unpacker_js(url) {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    load_unpacker(url, function(result) {
+        script.innerHTML = result;
+        play_js(script);
+    });
+    return script;
+}
+
 // LZW-compress a string
 function lzw_encode(s) {
     s = encode_utf8(s);
@@ -133,47 +154,6 @@ function tally_chars(data) {
         memo[num]++;//increase
     }, []);
 }
-
-/* function encode_tally(data) {
-    var acc = 0;
-    var out = [].push(data.length);
-    out.concat(_.reduce(data, function(memo, count) {
-        if(count == 0) {
-            acc++;
-        } else {
-            if(acc != 0) {
-                memo.push(0);
-                memo.push(acc);
-                acc = 0;
-            }
-            memo.push(count);//simple
-        }
-    }, []));
-    
-    if(acc != 0) {
-        out.push(0);
-        out.push(acc);//finalize
-    }
-    return out;
-}
-
-function decode_tally(data) {
-    var toggle = false;
-    return _.reduce(data, function(memo, count) {
-        if(toggle == true) {
-            toggle = false;
-            memo.concat(_.each(_.range(0, count), function() {
-                memo.push(0);
-            }));
-        } else {
-            if(count == 0) {
-                toggle = true;
-            } else {
-                memo.push(count);
-            }
-        }
-    }, []);   
-} */
 
 function splice_string(counts, data) {
     var acc = 0;
