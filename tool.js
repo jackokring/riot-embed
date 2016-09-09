@@ -20,7 +20,7 @@ function load_unpacker(url, callback) {//gets packed object at url
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            callback(unpacker(this.responseText));
+            callback(JSON.parse(unpacker(this.responseText)));
         }
     }
     xmlhttp.open("GET", url, true);
@@ -35,6 +35,24 @@ function play_load_unpacker_js(url) {
         play_js(script);
     });
     return script;
+}
+
+function save_packer(url, json, callback) {
+    var http = new XMLHttpRequest();
+    http.open("PUT", url, true);
+    //Send the proper header information along with the request
+    http.setRequestHeader("Content-type", "application/json");
+    http.onreadystatechange = function() {//Call a function when the state changes.
+        if(http.readyState == 4 && http.status == 200) {
+            callback(http.responseText);
+        }
+    }
+    http.send(packer(JSON.stringify(json)));
+}
+
+//And a final to generate a set of url vars
+function url_json(json) {
+    return '?' + btoa(encode_utf8(JSON.stringify(json)));
 }
 
 // LZW-compress a string
