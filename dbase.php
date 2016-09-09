@@ -21,10 +21,18 @@ function input() {
 }
 
 function session() {
+	$h = $ip . DB_NAME . DB_HOST;
 	$c = $_COOKIE['session'];
 	$ip = $_SERVER['REMOTE_ADDR'];
 	if(!isset($c)) {
-		
+		$c = $h;
+		setcookie('session', $c);
+		logout();
+	} else {
+		if($c != $h) {
+			unset($_COOKIE['session']);
+			session();
+		}
 	}
 }
 
