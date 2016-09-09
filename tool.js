@@ -28,8 +28,23 @@ function appPON(json, hash, callback) {
     });
 }
 
-function hashCode(input) {
-    
+function hashCode(input) { //CH-32
+    var gen = tally(input);
+    gen.zz = input.length;
+    var acc = 0;
+    gen = _.reduce(gen, function(memo, val) {
+        memo += String.fromCharCode((val << (acc % 17)) % 40763 + acc);
+        acc += val % 98 + input.charCodeAt(acc * 65341 % input.length);
+    }, '');
+    gen = pack(gen);
+    gen = _.reduce(gen, function(memo, val) {
+        memo += String.fromCharCode((val << (acc % 18)) % 45563 + acc);
+        acc += val % 37;
+    }, '');
+    gen = btoa(encodeUTF(gen));
+    var genMax = gen.length - 32;
+    var genStart = input.length % genMax;
+    return gen.substring(genStart, genStart + 32);
 }
 
 function makeHash(input) {
