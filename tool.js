@@ -96,7 +96,7 @@ function bwt_encode(data) {
             var r = buff[x + i].charCodeAt() - buff[y + i].charCodeAt();
             if (r !== 0) return r;
         }
-    return 0;
+        return 0;
     });
 
     var top;
