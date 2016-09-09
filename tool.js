@@ -66,7 +66,7 @@ function savePON(url, json, callback) {
 
 //And a final to generate a set of url vars
 function urlJSON(json) {
-    return '?' + btoa(encode_utf8(JSON.stringify(json)));
+    return '?' + btoa(encodeUTF(JSON.stringify(json)));
 }
 
 // LZW-compress a string
