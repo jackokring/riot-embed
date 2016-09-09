@@ -181,8 +181,9 @@ function tally(data) {
     }, []);
 }
 
-function splice(counts, data) {
+function splice(data) {
     var acc = 0;
+    var counts = tally(data);
     return _.reduce(counts, function(memo, count, key) {
         if(count == 0) return;
         memo.push(String.fromCharCode(key) + data.substring(acc, count + acc));
@@ -195,8 +196,7 @@ function splice(counts, data) {
 //a packer and unpacker with good efficiency
 function pack(data) {
     var bwt = encodeBWT(data);
-    var tall = tally(data);
-    var mix = splice(tall, bwt.data);
+    var mix = splice(bwt.data);
     
     mix = _.map(mix, encodeLZW);
     return JSON.stringify({
