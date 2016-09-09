@@ -241,8 +241,7 @@ function unpack(data) {
         /* var key = lzw.charAt(0);//get seek char */
         memo += lzw.substring(1, lzw.length);//concat
     }, '');
-    got = _.extendOwn({}, got, )
-    return decodeBWT(top, mix);
+    return _.extendOwn(decodeBWT(top, mix), _.omit(got, 'top', 'mix'));
 }
 
 function noConflict() {
