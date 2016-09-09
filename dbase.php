@@ -27,9 +27,15 @@ function cacheHash() {
 // Create connection
 $conn = mysqli_connect($DB_HOST, $DB_USER, $DB_PASSWORD, $DB_NAME);
 
+function chuck(str) {
+	var object;
+	object['error'] = str; 
+	die(json_encode(object));
+}
+
 // Check connection
 if (!$conn) {
-    die('"Database conncetion error: ' . mysqli_connect_error() . '"');//as JSON
+    chuck('Database conncetion error: ' . mysqli_connect_error());//as JSON
 }
 
 //========================================
