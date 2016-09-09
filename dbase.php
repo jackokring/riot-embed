@@ -20,6 +20,10 @@ function input() {
 	//ok
 }
 
+function cacheHash() {
+	return intval($_SERVER['QUERY_STRING']);//super global
+}
+
 // Create connection
 $conn = mysqli_connect($DB_HOST, $DB_USER, $DB_PASSWORD, $DB_NAME);
 
