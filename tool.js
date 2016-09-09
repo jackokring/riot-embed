@@ -207,6 +207,9 @@ function unpacker(data) {
     var mix = got.mix;
     
     mix = _.map(mix, lzw_decode);
+    mix.sort(function(a, b) {
+        return a.charCodeAt(0) - b.charCodeAt(0);
+    });
     mix = _.reduce(mix, function(memo, lzw) {
         /* var key = lzw.charAt(0);//get seek char */
         memo += lzw.substring(1, lzw.length);//concat
