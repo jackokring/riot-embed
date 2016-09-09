@@ -13,21 +13,18 @@ var riotEmbed = {
     var saveState = __;
     var url = 'http://localhost';
 
-//load JS and execute
-/* This has the effect of js inclusion, which must assign to a global
-so that play_js(script) can play or replay it */
+//====================================
+// PON handling
+//====================================
 function setURL(newUrl) {
     url = newUrl;
 }
 
-function loadJS() {
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = url;
-    return script;
+function appPON(json, hash, callback) {
+    
 }
 
-function play(script, callback) {
+function run(script, callback) {
     document.body.appendChild(script);//RUN!!
     script.onload = function() {
         script.parent.removeChild(script);//GC!!
