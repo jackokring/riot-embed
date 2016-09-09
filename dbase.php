@@ -20,12 +20,20 @@ function input() {
 	//ok
 }
 
+function session() {
+	$c = $_COOKIE['session'];
+	$ip = $_SERVER['REMOTE_ADDR'];
+	if(!isset($c)) {
+		
+	}
+}
+
 function cacheHash() {
 	return intval($_SERVER['QUERY_STRING']);//super global
 }
 
 // Create connection
-$conn = mysqli_connect($DB_HOST, $DB_USER, $DB_PASSWORD, $DB_NAME);
+$conn = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
 function chuck(str) {
 	var object;
