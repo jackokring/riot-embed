@@ -208,9 +208,9 @@ function pack(data) {
 
 function unpack(data) {
     var got = JSON.parse(data);
-    var top = got.top;
+    var top = got.top || 0;
     /* var tally = got.tally; */
-    var mix = got.mix;
+    var mix = got.mix || [];
     
     mix = _.map(mix, decodeLZW);
     mix.sort(function(a, b) {
@@ -220,7 +220,7 @@ function unpack(data) {
         /* var key = lzw.charAt(0);//get seek char */
         memo += lzw.substring(1, lzw.length);//concat
     }, '');
-    return decodeBWT(top, data);
+    return decodeBWT(top, mix);
 }
 
 function noConflict() {
