@@ -21,7 +21,19 @@ function setURL(newUrl) {
 }
 
 function appPON(json, hash, callback) {
+    forkPON(json, eval, function(script) {
+        if(hashCode(script.innerHTML) == hash) {
+            run(script, callback);
+        } 
+    });
+}
+
+function hashCode(input) {
     
+}
+
+function makeHash(input) {
+    return hashCode('eval(' + input + ');');
 }
 
 function run(script, callback) {
