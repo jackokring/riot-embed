@@ -15,14 +15,14 @@ var riotEmbed = {
 //load JS and execute
 /* This has the effect of js inclusion, which must assign to a global
 so that play_js(script) can play or replay it */
-function load_js(url) {
+function loadJS(url) {
     var script = document.createElement('script');
     script.type = 'text/javascript';
     script.src = url;
     return script;
 }
 
-function play_js(script) {
+function playJS(script) {
     document.body.appendChild(script);//RUN!!
     script.onload = function() {
         script.parent.removeChild(script);//GC!!
@@ -30,28 +30,28 @@ function play_js(script) {
     return script;//for chaining!!
 }
 
-function load_unpacker(url, callback) {//gets packed object at url
+function loadPON(url, callback) {//gets packed object at url
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            callback(JSON.parse(unpacker(this.responseText)));
+            callback(JSON.parse(unpack(this.responseText)));
         }
     }
     xmlhttp.open("GET", url, true);
     xmlhttp.send();
 }
 
-function play_load_unpacker_js(url) {
+function playPON(url) {
     var script = document.createElement('script');
     script.type = 'text/javascript';
-    load_unpacker(url, function(result) {
+    loadPON(url, function(result) {
         script.innerHTML = result;
-        play_js(script);
+        playJS(script);
     });
     return script;
 }
 
-function save_packer(url, json, callback) {
+function savePON(url, json, callback) {
     var http = new XMLHttpRequest();
     http.open("PUT", url, true);
     //Send the proper header information along with the request
@@ -61,16 +61,16 @@ function save_packer(url, json, callback) {
             callback(http.responseText);
         }
     }
-    http.send(packer(JSON.stringify(json)));
+    http.send(pack(JSON.stringify(json)));
 }
 
 //And a final to generate a set of url vars
-function url_json(json) {
+function urlJSON(json) {
     return '?' + btoa(encode_utf8(JSON.stringify(json)));
 }
 
 // LZW-compress a string
-function lzw_encode(s) {
+function encodeLZW(s) {
     s = encode_utf8(s);
     var dict = {};
     var data = (s + "").split("");
