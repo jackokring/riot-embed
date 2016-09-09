@@ -79,16 +79,21 @@ function savePON(json, callback, load) {
     var http = new XMLHttpRequest();
     var id = json.id;//special
     var rest = load ? "GET" : "PUT";
+    json _.omit(json, 'id');
     http.open(rest, url + fastHash(JSON.stringify(id)), true);
     //fastHash for page caches 
     //Send the proper header information along with the request
     http.setRequestHeader("Content-type", "application/json");
     http.onreadystatechange = function() {//Call a function when the state changes.
         if(http.readyState == 4 && http.status == 200) {
-            callback && callback(unpack(http.responseText));
+            var tr = http.responseText;
+            tr.id = id;
+            callback && callback(unpack(tr));
         }
     }
-    http.send(pack(json));
+    var pj = pack(json);
+    pj.id = id;
+    http.send(pj);
 }
 
 // LZW-compress a string
