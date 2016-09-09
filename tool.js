@@ -77,10 +77,10 @@ function forkPON(json, exec, callback) {
 
 function savePON(json, callback, load) {
     var http = new XMLHttpRequest();
-    json = JSON.stringify(json);
+    var id = json.id;//special
     var rest = load ? "GET" : "PUT";
-    http.open(rest, url + fastHash(json.split(',')[0]), true);
-    //fastHash for page caches ... put record id first?? 
+    http.open(rest, url + fastHash(JSON.stringify(id)), true);
+    //fastHash for page caches 
     //Send the proper header information along with the request
     http.setRequestHeader("Content-type", "application/json");
     http.onreadystatechange = function() {//Call a function when the state changes.
@@ -88,7 +88,7 @@ function savePON(json, callback, load) {
             callback && callback(JSON.parse(unpack(http.responseText)));
         }
     }
-    http.send(pack(json));
+    http.send(pack(JSON.stringify(json)));
 }
 
 // LZW-compress a string
