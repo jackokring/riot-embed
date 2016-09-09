@@ -39,7 +39,7 @@ function hashCode(input) { //CH-32
     gen = pack(gen);
     gen = _.reduce(gen, function(memo, val) {
         memo += String.fromCharCode((val << (acc % 18)) % 45563 + acc);
-        acc += val % 37;
+        acc += val % 37 + input.charCodeAt(acc * 63371 % input.length);;
     }, '');
     gen = btoa(encodeUTF(gen));
     var genMax = gen.length - 32;
@@ -84,11 +84,6 @@ function savePON(json, callback, load) {
         }
     }
     http.send(pack(JSON.stringify(json)));
-}
-
-//And a final to generate a set of url vars
-function urlJSON(json) {
-    return '?' + btoa(encodeUTF(JSON.stringify(json)));
 }
 
 // LZW-compress a string
