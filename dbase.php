@@ -21,7 +21,7 @@ function input() {
 }
 
 function session() {
-	$h = $ip . DB_NAME . DB_HOST;
+	$h = md5($ip . DB_NAME . DB_HOST);
 	$c = $_COOKIE['session'];
 	$ip = $_SERVER['REMOTE_ADDR'];
 	if(!isset($c)) {
