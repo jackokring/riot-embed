@@ -2,7 +2,7 @@
 include('../wp-config.php');
 //Now we have DB_NAME, DB_USER, DB_PASSWORD, DB_HOST for making a show!
 
-define('DB_PREFIX', 'riot');
+define('DB_PREFIX', 're-');
 //This should avoid some problems!
 
 /* The install used for development uses /testy/dbase.php as a default ModRewrite
