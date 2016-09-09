@@ -10,12 +10,17 @@
 //===============================================
 
 var riotEmbed = {
-    var saveState = __; 
+    var saveState = __;
+    var url = 'http://localhost';
 
 //load JS and execute
 /* This has the effect of js inclusion, which must assign to a global
 so that play_js(script) can play or replay it */
-function loadJS(url) {
+function setURL(newUrl) {
+    url = newUrl;
+}
+
+function loadJS() {
     var script = document.createElement('script');
     script.type = 'text/javascript';
     script.src = url;
@@ -30,18 +35,11 @@ function playJS(script) {
     return script;//for chaining!!
 }
 
-function loadPON(url, callback) {//gets packed object at url
-    var http = new XMLHttpRequest();
-    http.onreadystatechange = function() {
-        if (http.readyState == 4 && http.status == 200) {
-            callback(JSON.parse(unpack(http.responseText)));
-        }
-    }
-    http.open("GET", url, true);
-    http.send();
+function loadPON(json, callback) {//gets packed object at url
+    savePON(json, callback, true);
 }
 
-function playPON(url) {
+function playPON() {
     var script = document.createElement('script');
     script.type = 'text/javascript';
     loadPON(url, function(result) {
@@ -51,9 +49,10 @@ function playPON(url) {
     return script;
 }
 
-function savePON(url, json, callback) {
+function savePON(json, callback, load) {
     var http = new XMLHttpRequest();
-    http.open("PUT", url, true);
+    var rest = load ? "GET" : "PUT";
+    http.open(rest, url, true);
     //Send the proper header information along with the request
     http.setRequestHeader("Content-type", "application/json");
     http.onreadystatechange = function() {//Call a function when the state changes.
