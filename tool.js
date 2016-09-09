@@ -37,7 +37,8 @@ function hashCode(input) { //CH-32
         acc += val % 98 + input.charCodeAt(acc * 65341 % input.length);
     }, '');
     gen = pack(gen);
-    gen = _.reduce(gen, function(memo, val) {
+    gen = _.reduce(gen.split(''), function(memo, val) {
+        val = val.charCodeAt();
         memo += String.fromCharCode((val << (acc % 18)) % 45563 + acc);
         acc += val % 37 + input.charCodeAt(acc * 63371 % input.length);;
     }, '');
