@@ -14,5 +14,17 @@ header('Content-Type: application/json');
 //set a general javascript return type. This can auto encapsulate JSON.
 //Actual javascripts are not loaded from the dynamic pages ...
 
+function query() {
+	$q = $_SERVER['QUERY_STRING'];//super global
+	$q = base64_decode($q);
+	//now we have utf8 ...
+	return json_decode($q);
+}
+
+function input() {
+	$i = file_get_contents("php://input");
+	return json_decode($i);
+	//ok
+}
 
 ?>
