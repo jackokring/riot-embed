@@ -15,7 +15,7 @@
 //===============================================
 
 var riotEmbed = {
-    var VERSION = '1.0.0';
+    var VERSION = '1.0.1';
     var saveState = __;
     var url = 'http://localhost?';
 
@@ -86,7 +86,6 @@ function savePON(json, callback, load) {
     var http = new XMLHttpRequest();
     var id = json.id;//special
     var rest = load ? "GET" : "PUT";
-    json _.omit(json, 'id');
     http.open(rest, url + fastHash(JSON.stringify(id)), true);
     //fastHash for page caches 
     //Send the proper header information along with the request
@@ -98,9 +97,7 @@ function savePON(json, callback, load) {
             callback && callback(tr);
         }
     }
-    var pj = pack(json);
-    pj.id = id;
-    http.send(pj);
+    http.send(pack(json));
 }
 
 // LZW-compress a string
