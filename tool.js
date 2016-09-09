@@ -219,11 +219,12 @@ function pack(data) {
     var mix = splice(bwt.data);
     
     mix = _.map(mix, encodeLZW);
-    return JSON.stringify({
+    data = _.extendOwn({}, data, {
         top: bwt.top,
         /* tally: encode_tally(tally), */
         mix: mix
     });
+    return JSON.stringify(data);
 }
 
 function unpack(data) {
@@ -240,6 +241,7 @@ function unpack(data) {
         /* var key = lzw.charAt(0);//get seek char */
         memo += lzw.substring(1, lzw.length);//concat
     }, '');
+    got = _.extendOwn({}, got, )
     return decodeBWT(top, mix);
 }
 
