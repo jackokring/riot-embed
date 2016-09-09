@@ -32,8 +32,10 @@ function lzw_encode(s) {
         }
         else {
             out.push(phrase.length > 1 ? dict['_'+phrase] : phrase.charCodeAt(0));
-            dict['_' + phrase + currChar] = code;
-            code++;
+            if(code < 65536) {//limit
+                dict['_' + phrase + currChar] = code;
+                code++;
+            }
             phrase=currChar;
         }
     }
@@ -63,8 +65,10 @@ function lzw_decode(s) {
         }
         out.push(phrase);
         currChar = phrase.charAt(0);
-        dict['_'+code] = oldPhrase + currChar;
-        code++;
+        if(code < 65536) {
+            dict['_'+code] = oldPhrase + currChar;
+            code++;
+        }
         oldPhrase = phrase;
     }
     return decode_utf8(out.join(""));
