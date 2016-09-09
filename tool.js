@@ -31,14 +31,14 @@ function playJS(script) {
 }
 
 function loadPON(url, callback) {//gets packed object at url
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            callback(JSON.parse(unpack(this.responseText)));
+    var http = new XMLHttpRequest();
+    http.onreadystatechange = function() {
+        if (http.readyState == 4 && http.status == 200) {
+            callback(JSON.parse(unpack(http.responseText)));
         }
     }
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
+    http.open("GET", url, true);
+    http.send();
 }
 
 function playPON(url) {
@@ -58,7 +58,7 @@ function savePON(url, json, callback) {
     http.setRequestHeader("Content-type", "application/json");
     http.onreadystatechange = function() {//Call a function when the state changes.
         if(http.readyState == 4 && http.status == 200) {
-            callback(http.responseText);
+            callback(JSON.parse(unpack(http.responseText)));
         }
     }
     http.send(pack(JSON.stringify(json)));
