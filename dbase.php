@@ -2,8 +2,8 @@
 include('../wp-config.php');
 //Now we have DB_NAME, DB_USER, DB_PASSWORD, DB_HOST for making a show!
 
-define('DB_PREFIX', $table_prefix . $table_prefix);
-//This should avoid some problems, but not all!
+define('DB_PREFIX', 'riot');
+//This should avoid some problems!
 
 /* The install used for development uses /testy/dbase.php as a default ModRewrite
 	to this script. As this is a proxy [P] to /var/www/html/dbase.php then
@@ -26,5 +26,21 @@ function input() {
 	return json_decode($i);
 	//ok
 }
+
+// Create connection
+$conn = mysqli_connect($DB_HOST, $DB_USER, $DB_PASSWORD, $DB_NAME);
+
+// Check connection
+if (!$conn) {
+    die('"Database conncetion error: ' . mysqli_connect_error() . '"');//as JSON
+}
+
+//========================================
+// OK the DB is up
+//========================================
+
+
+
+
 
 ?>
