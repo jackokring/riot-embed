@@ -39,12 +39,12 @@ function loadPON(json, callback) {//gets packed object at url
     savePON(json, callback, true);
 }
 
-function playPON() {
+function playPON(json, callback) {
     var script = document.createElement('script');
     script.type = 'text/javascript';
-    loadPON(url, function(result) {
+    loadPON(json, function(result) {
         script.innerHTML = result;
-        playJS(script);
+        playJS(script, callback);
     });
     return script;
 }
