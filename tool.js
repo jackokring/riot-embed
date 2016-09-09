@@ -27,12 +27,12 @@ function loadJS() {
     return script;
 }
 
-function playJS(script) {
+function play(script, callback) {
     document.body.appendChild(script);//RUN!!
     script.onload = function() {
         script.parent.removeChild(script);//GC!!
+        callback && callback(_.now());
     }
-    return script;//for chaining!!
 }
 
 function loadPON(json, callback) {//gets packed object at url
@@ -44,7 +44,7 @@ function playPON(json, callback) {
     script.type = 'text/javascript';
     loadPON(json, function(result) {
         script.innerHTML = result;
-        playJS(script, callback);
+        play(script, callback);
     });
     return script;
 }
@@ -57,7 +57,7 @@ function savePON(json, callback, load) {
     http.setRequestHeader("Content-type", "application/json");
     http.onreadystatechange = function() {//Call a function when the state changes.
         if(http.readyState == 4 && http.status == 200) {
-            callback(JSON.parse(unpack(http.responseText)));
+            callback && callback(JSON.parse(unpack(http.responseText)));
         }
     }
     http.send(pack(JSON.stringify(json)));
