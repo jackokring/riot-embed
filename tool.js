@@ -9,7 +9,7 @@
 //===============================================
 
 function riotEmbed() {
-    this.VERSION = '1.0.3';
+    this.VERSION = '1.0.4';
     this.saveState = __;
     this.url = 'http://localhost?';
 
@@ -266,4 +266,4 @@ function noConflict() {
 return this;
 }//close object
 
-var __ = riotEmbed();//activate
+var __ = riotEmbed.call(riotEmbed);//activate with riotEmbed as this
