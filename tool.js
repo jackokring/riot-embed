@@ -55,7 +55,7 @@ function hashCode(input) { //CH-32
 }
 
 function makeHash(input) {
-    return hashCode('eval(' + input + ');');
+    return hashCode('eval(' + stringifyPreJS(input) + ');');
 }
 
 function run(script, callback) {
@@ -77,9 +77,15 @@ function forkPON(json, exec, callback) {
     var script = document.createElement('script');
     script.type = 'text/javascript';
     loadPON(json, function(result) {
-        script.innerHTML = exec + '(' + result + ');';
+        script.innerHTML = exec + '(' + stringifyPreJS(result) + ');';
         callback && callback(script);
     });
+}
+
+function stringifyPreJS(s) {
+    return s.
+        replace(/\u2028/g, '\\u2028').
+        replace(/\u2029/g, '\\u2029');
 }
 
 function savePON(json, callback, load) {
