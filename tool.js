@@ -11,10 +11,11 @@
 function riotEmbed(ob) {
     
     if(ob) {
-        //maybe
-        return;
+        //maybe some semantic?
+        
+        return riotEmbed;
     }
-    riotEmbed.VERSION = '1.0.4b';
+    riotEmbed.VERSION = '1.0.4c';
     riotEmbed._saveState = __;
     riotEmbed.url = 'http://localhost';
 
