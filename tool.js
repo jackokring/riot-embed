@@ -9,7 +9,7 @@
 //===============================================
 
 function riotEmbed() {
-    this.VERSION = '1.0.2';
+    this.VERSION = '1.0.3';
     this.saveState = __;
     this.url = 'http://localhost?';
 
@@ -36,7 +36,7 @@ function hashCode(input) { //CH-32
         memo += String.fromCharCode((val << (acc % 17)) % 40763 + acc % 9473);
         acc += val % 98 + input.charCodeAt(acc * 65341 % input.length);
     }, '');
-    gen = pack(gen);
+    gen = JSON.stringify(pack(gen));
     gen = _.reduce(gen.split(''), function(memo, val) {
         val = val.charCodeAt();
         memo += String.fromCharCode((val << (acc % 18)) % 45563 + acc % 6923);
