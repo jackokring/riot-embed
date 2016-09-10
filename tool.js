@@ -14,10 +14,10 @@
 // This does imply $$ is very sexy :D
 //===============================================
 
-var riotEmbed = {
-    var VERSION = '1.0.2';
-    var saveState = __;
-    var url = 'http://localhost?';
+function riotEmbed() {
+    this.VERSION = '1.0.2';
+    this.saveState = __;
+    this.url = 'http://localhost?';
 
 //====================================
 // PON handling
@@ -269,6 +269,7 @@ function noConflict() {
 //============================================
 // And end the __ library
 //============================================
+return this;
 }//close object
 
-var __ = riotEmbed;//activate
+var __ = riotEmbed();//activate
