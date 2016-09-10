@@ -15,7 +15,7 @@ function riotEmbed(ob) {
         
         return riotEmbed;
     }
-    riotEmbed.VERSION = '1.0.4c';
+    riotEmbed.VERSION = '1.0.4d';
     riotEmbed._saveState = __;
     riotEmbed.url = 'http://localhost';
 
@@ -86,6 +86,7 @@ function stringifyPreJS(s) {
 }
 
 function savePON(json, callback, load) {
+    json.tx = _.now();
     var http = new XMLHttpRequest();
     var id = json.id;//special
     var rest = load ? "GET" : "PUT";
@@ -98,6 +99,7 @@ function savePON(json, callback, load) {
         if(http.readyState == 4 && http.status == 200) {
             var tr = unpack(JSON.parse(http.responseText));
             tr.id.__ = id;
+            tr.rx = _.now();
             callback && callback(tr);
         }
     }
