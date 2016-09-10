@@ -1,6 +1,6 @@
 # riot-embed
 
-Looking at riot.js as a useful web technology, I decided to investigate the option to embed it within wordpress using the header and footer scripts plugin. Adding some script tags to the footer, allows both less.js and riot.js to work within the page and post bodies. This might be useful to improve the basic wordpress theme, and even of use in the more expressive Divi theme.
+Looking at *riot.js* as a useful web technology, I decided to investigate the option to embed it within *wordpress* using a header and footer scripts plugin. Adding some script tags to the footer (my Google Analytics tags went in the header), allows both *less.js* and *riot.js* to work within all page and post bodies. This might be useful to improve the basic wordpress theme, and even of use in the more expressive Divi theme. Just include the `<my-custom>` tags and the `<script type="riot/tag" src="somewhere.on.github/my-custom.tag">` tags for the things you want to use, on the pages you want to use them on.
 
 ```
 <script type="riot/tag" src="https://rawgit.com/riot/examples/gh-pages/if-else-elseif/if.tag"></script>
@@ -26,6 +26,6 @@ An end point token can be issued as a cookie, and activated using a password, ge
 
 #Compression
 
-I'm building in compression to check out some new ideas on data backends. I decided to not go for jQuery as it's basically tart over function, where as underscore.js is quite functional, and reduces code size. It might not be the most efficient time execution wise, but it often has a time writing wise, and a definite space reduction in the long run.
+I'm building in compression to check out some new ideas on data backends. I decided to not go for *jQuery* (even though wordpress does include it in pages) as it's basically tart over function, where as *underscore.js* is quite functional, and reduces code size. It might not be the most efficient time execution wise, but it often has a time writing wise, and a definite space reduction in the long run. Some people prefer *lodash.js*, but it's almost the same, except the utility of `var x = _(array); ... ; a.filter( ... )` has been mangled for chaining calls. 
 
-The aim is to make the client the data processing centre, and to only load the server with essentials (such as sanity checking). This is encouraged by moving to a ajax script model, where the server issues scripts, and not static json. The fat clients which are comming won't have a problem with this arrangement, and the observation that processing is quite cheap compared to transmission is mass service paradigms makes this a good look see.
+The aim is to make the client the data processing centre, and to only load the server with essentials (such as sanity checking of database consistency). This is encouraged by moving to an ajax script model, where the server issues scripts, and not just static json. The fat clients (thin clients plus Moore's Law) which are coming won't have a problem with this arrangement, and the observation that processing is quite cheap compared to transmission in mass service paradigms makes this a good look see.
