@@ -6,6 +6,7 @@ Looking at riot.js as a useful web technology, I decided to investigate the opti
 <script type="riot/tag" src="https://rawgit.com/riot/examples/gh-pages/if-else-elseif/if.tag"></script>
 <script src="https://rawgit.com/less/less.js/master/dist/less.min.js"></script>
 <script src="https://rawgit.com/riot/riot/master/riot%2Bcompiler.min.js"></script>
+<script src="https://rawgit.com/jackokring/riot-embed/master/underscore.min.js"></script>
   <!-- mount this app -->
   <script>
     riot.parsers.css.less = function(tagName, style) {
