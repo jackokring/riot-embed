@@ -18,7 +18,7 @@ function riotEmbed(ob) {
     }
     riotEmbed.VERSION = '1.0.4f';
     riotEmbed._saveState = __;
-    riotEmbed.url = 'http://localhost';
+    riotEmbed.url = 'https://www.kring.co.uk/dbase.php';//CHANGE IF NEEDED
 
 //====================================
 // PON handling
