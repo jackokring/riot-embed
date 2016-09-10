@@ -12,10 +12,11 @@ function riotEmbed(ob) {
     
     if(ob) {
         //maybe some semantic?
-        
+        //the following should be same as trimmed code text?
+        alert('Object checksum: ' + makeHash(ob.toString()));
         return riotEmbed;
     }
-    riotEmbed.VERSION = '1.0.4e';
+    riotEmbed.VERSION = '1.0.4f';
     riotEmbed._saveState = __;
     riotEmbed.url = 'http://localhost';
 
