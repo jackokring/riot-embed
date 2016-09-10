@@ -34,6 +34,7 @@ function session() {
 			session();
 		}
 	}
+	return $c;
 }
 
 function cacheHash() {
@@ -51,7 +52,7 @@ function chuck(str) {
 
 // Check connection
 if (!$conn) {
-    chuck('Database conncetion error: ' . mysqli_connect_error());//as JSON
+	chuck('Database conncetion error: ' . mysqli_connect_error());//as JSON
 }
 
 //========================================
@@ -60,6 +61,8 @@ if (!$conn) {
 
 
 
-
+function logout() {
+	
+}
 
 ?>
