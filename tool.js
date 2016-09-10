@@ -8,17 +8,19 @@
 // This does imply $$ is very sexy :D
 //===============================================
 
-function riotEmbed() {
-    this.VERSION = '1.0.4';
-    this.saveState = __;
-    this.url = 'http://localhost?';
+function riotEmbed(ob) {
+    
+    if(ob) {
+        //maybe
+        return;
+    }
+    riotEmbed.VERSION = '1.0.4b';
+    riotEmbed._saveState = __;
+    riotEmbed.url = 'http://localhost';
 
 //====================================
 // PON handling
 //====================================
-function setURL(newUrl) {
-    url = newUrl + '?';
-}
 
 function appPON(json, hash, callback) {
     forkPON(json, eval, function(script) {
@@ -87,7 +89,7 @@ function savePON(json, callback, load) {
     var id = json.id;//special
     var rest = load ? "GET" : "PUT";
     json = _.omit(json, 'id');
-    http.open(rest, url + fastHash(JSON.stringify(id)), true);
+    http.open(rest, url + '?' + fastHash(JSON.stringify(id)), true);
     //fastHash for page caches 
     //Send the proper header information along with the request
     http.setRequestHeader("Content-type", "application/json");
@@ -256,14 +258,14 @@ function unpack(got) {
 }
 
 function noConflict() {
-    __ = saveState;
-    return this;//ok give it a new name
+    __ = _saveState;
+    return riotEmbed;//ok give it a new name
 }
 
 //============================================
 // And end the __ library
 //============================================
-return this;
+__ = riotEmbed;
 }//close object
 
-var __ = riotEmbed.call(riotEmbed);//activate with riotEmbed as this
+riotEmbed();//activate
