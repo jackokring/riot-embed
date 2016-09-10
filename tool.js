@@ -1,4 +1,4 @@
-//      RiotEmbed tool.js 1.0.0
+//      RiotEmbed tool.js 1.0.4
 //      https://kring.co.uk
 //      (c) 2016 Simon Jackson, K Ring Technologies Ltd
 //      MIT, like as he said. And underscored :D
@@ -15,7 +15,7 @@ function riotEmbed(ob) {
         
         return riotEmbed;
     }
-    riotEmbed.VERSION = '1.0.4d';
+    riotEmbed.VERSION = '1.0.4e';
     riotEmbed._saveState = __;
     riotEmbed.url = 'http://localhost';
 
@@ -89,7 +89,7 @@ function savePON(json, callback, load) {
     json.tx = _.now();
     var http = new XMLHttpRequest();
     var id = json.id;//special
-    var rest = load ? "GET" : "PUT";
+    var rest = load ? 'GET' : 'PUT';
     json = _.omit(json, 'id');
     http.open(rest, url + '?' + fastHash(JSON.stringify(id)), true);
     //fastHash for page caches 
@@ -112,7 +112,7 @@ function savePON(json, callback, load) {
 function encodeLZW(s) {
     s = encodeUTF(s);
     var dict = {};
-    var data = (s + "").split("");
+    var data = (s + '').split('');
     var out = [];
     var currChar;
     var phrase = data[0];
@@ -135,13 +135,13 @@ function encodeLZW(s) {
     for (var i=0; i<out.length; i++) {
         out[i] = String.fromCharCode(out[i]);
     }
-    return out.join("");
+    return out.join('');
 }
 
 // Decompress an LZW-encoded string
 function decodeLZW(s) {
     var dict = {};
-    var data = (s + "").split("");
+    var data = (s + '').split('');
     var currChar = data[0];
     var oldPhrase = currChar;
     var out = [currChar];
@@ -163,7 +163,7 @@ function decodeLZW(s) {
         }
         oldPhrase = phrase;
     }
-    return decodeUTF(out.join(""));
+    return decodeUTF(out.join(''));
 }
 
 function encodeUTF(s) {
