@@ -1,4 +1,4 @@
-//      RiotEmbed tool.js 1.0.4
+//      RiotEmbed tool.js 1.0.5
 //      https://kring.co.uk
 //      (c) 2016 Simon Jackson, K Ring Technologies Ltd
 //      MIT, like as he said. And underscored :D
@@ -16,7 +16,7 @@ function riotEmbed(ob) {
         alert('Object checksum: ' + makeHash(ob.toString()));
         return riotEmbed;
     }
-    riotEmbed.VERSION = '1.0.4f';
+    riotEmbed.VERSION = '1.0.5';
     riotEmbed._saveState = __;
     riotEmbed.url = 'https://www.kring.co.uk/dbase.php';//CHANGE IF NEEDED
 
@@ -148,6 +148,10 @@ function encodeLZW(s, bounce) {
     return out.join('');
 }
 
+function encodePON(s) {
+    return encodeLZW(s, true);
+}
+
 // Decompress an LZW-encoded string
 function decodeLZW(s, bounce) {
     var dict = {};
@@ -182,6 +186,10 @@ function decodeLZW(s, bounce) {
         oldPhrase = phrase;
     }
     return decodeUTF(out.join(''));
+}
+
+function decodePON(s) {
+    return decodeLZW(s, true);
 }
 
 function encodeUTF(s) {
@@ -253,7 +261,7 @@ function pack(data) {
     var bwt = encodeBWT(JSON.stringify(data));
     var mix = splice(bwt.data);
     
-    mix = _.map(mix, encodeLZW);
+    mix = _.map(mix, encodePON);
     data = _.extendOwn({}, data, {
         top: bwt.top,
         /* tally: encode_tally(tally), */
@@ -267,7 +275,7 @@ function unpack(got) {
     /* var tally = got.tally; */
     var mix = got.mix || [];
     
-    mix = _.map(mix, decodeLZW);
+    mix = _.map(mix, decodePON);
     mix.sort(function(a, b) {
         return a.charCodeAt(0) - b.charCodeAt(0);
     });
