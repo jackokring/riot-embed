@@ -130,12 +130,12 @@ function encodeLZW(s, bounce) {
                 dict['_' + phrase + currChar] = code;
                 code++;
                 if(bounce && codeL != code - 2) {
-                    _.reduce(phrase.split(''), function (memo, chr) {
+                    _.each(phrase.split(''), function (chr) {
                         if(code < 65536) {
                             dict['_' + phrase + chr] = code;
                             code++;
                         }
-                    }, dict);
+                    });
                 }
             }
             phrase=currChar;
@@ -149,7 +149,7 @@ function encodeLZW(s, bounce) {
 }
 
 // Decompress an LZW-encoded string
-function decodeLZW(s) {
+function decodeLZW(s, bounce) {
     var dict = {};
     var data = (s + '').split('');
     var currChar = data[0];
@@ -170,6 +170,14 @@ function decodeLZW(s) {
         if(code < 65536) {
             dict['_'+code] = oldPhrase + currChar;
             code++;
+            if(bounce && !dict['_'+currCode]) {
+                _.each(phrase.split(''), function (chr) {
+                    if(code < 65536) {
+                        dict['_' + code] = oldPhrase + chr;
+                        code++;
+                    }
+                });
+            }
         }
         oldPhrase = phrase;
     }
