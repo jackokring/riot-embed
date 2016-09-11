@@ -25,10 +25,10 @@ An end point token can be issued as a cookie, and activated using a password, ge
 
 #Compression
 
-I'm building in compression to check out some new ideas on data backends. I decided to not go for *jQuery* (even though wordpress does include it in pages) as it's basically tart over function, where as *underscore.js* is quite functional, and reduces code size. It might not be the most efficient time execution wise, but it often has a time writing wise, and a definite space reduction in the long run. Some people prefer *lodash.js*, but it's almost the same, except the utility of `_.reduce(y, function() { (var z = _(x)).filter(...) ...}, []);` has been mangled for chaining calls. 
+I'm building in compression to check out some new ideas on data backends. I decided to not go for *jQuery* (even though wordpress does include it in pages) as it's basically tart over function, where as *underscore.js* is quite functional, and reduces code size. It might not be the most efficient time execution wise, but it often has a time writing wise, and a definite space reduction in the long run. Some people prefer *lodash.js*, but it's almost the same, except the utility of `_.reduce(y, function() { (var z = _(x)).filter(...) ...}, []);` to save bytes (?), has been mangled for chaining calls. 
 
 The aim is to make the client the data processing centre, and to only load the server with essentials (such as sanity checking of database consistency). This is encouraged by moving to an ajax script model, where the server issues scripts, and not just static json. The fat clients (thin clients plus Moore's Law) which are coming won't have a problem with this arrangement, and the observation that processing is quite cheap compared to transmission in mass service paradigms makes this a good look see.
 
 #QUnit Testing
 
-I have made QUnit testing be available.
+I have made QUnit testing be available. To assist in stability the dependant js libraries have been copied to this repository. This can be located [here](https://rawgit.com/jackokring/riot-embed/master/tests.html "QUnit Testing") for the whole project. The tests of the server side use [K Ring Technologies Ltd.](https://www.kring.co.uk "Enquire") so don't run the tests without reason (they can generate server traffic), as they have been run already in development.
