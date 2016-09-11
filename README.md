@@ -3,20 +3,26 @@
 Looking at *riot.js* as a useful web technology, I decided to investigate the option to embed it within *wordpress* using a header and footer scripts plugin. Adding some script tags to the footer (my Google Analytics tags went in the header), allows both *less.js* and *riot.js* to work within all page and post bodies. This might be useful to improve the basic wordpress theme, and even of use in the more expressive Divi theme. Just include the `<my-custom>` tags and the `<script type="riot/tag" src="somewhere.on.github/my-custom.tag">` tags for the things you want to use, on the pages you want to use them on.
 
 ```
-<script src="https://rawgit.com/jackokring/riot-embed/master/less.min.js"></script>
-<script src="https://rawgit.com/jackokring/riot-embed/master/riot%2Bcompiler.min.js"></script>
-<script src="https://rawgit.com/jackokring/riot-embed/master/underscore.min.js"></script>
-  <!-- mount this app -->
-  <script>
-    riot.parsers.css.less = function(tagName, style) {
-      var css = ''
-      less.render(style, {}, function(error, output) {
-        css = output.css
-      })
-      return css
-    }
-    riot.mount('*')
-  </script>
+<script>
+function __loading(script) {
+  var site = 'https://rawgit.com/jackokring/riot-embed/master/';
+  var s = document.createElement("script");
+  s.src = site + script;
+  var s0 = document.getElementsByTagName('script')[0];
+  s0.parentNode.insertBefore(s, s0);
+}
+__loading('less.min.js');
+__loading('riot%2Bcompiler.min.js');
+__loading('underscore.min.js');
+riot.parsers.css.less = function(tagName, style) {
+  var css = ''
+  less.render(style, {}, function(error, output) {
+    css = output.css
+  })
+  return css
+}
+riot.mount('*')
+</script>
 ```
 
 In order to support AJAX and a DB, a method of site specific access control is required. As the server receives the full URL request, then this could be used as a part key, along with an optional script embedded part key, to control access. But this would have the unfortunate hack of just requesting using the correct domain, from another domain. It has to be login specific to protect private data.
