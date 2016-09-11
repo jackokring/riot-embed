@@ -16,7 +16,7 @@ function riotEmbed(ob) {
         alert('Object checksum: ' + makeHash(ob.toString()));
         return riotEmbed;
     }
-    riotEmbed.VERSION = '1.0.5g';
+    riotEmbed.VERSION = '1.0.5h';
     riotEmbed._saveState = __;
     riotEmbed.url = 'https://www.kring.co.uk/dbase.php';//CHANGE IF NEEDED
 
@@ -305,7 +305,7 @@ function fromBuffer(arr) {
 	for (var i = 0, arrLen = arr.length; i < arrLen; i++) {
 		buf[i] = arr[i];
 	}
-	return decodeSUTF(arr);
+	return decodeSUTF(buf);
 }
 
 function mangleUTF(s) {
