@@ -93,12 +93,13 @@ function savePON(json, callback, load) {
     var rest = load ? 'GET' : 'PUT';
     json = _.omit(json, 'id');
     http.open(rest, url + '?' + fastHash(JSON.stringify(id)), true);
+    http.responseType = "arraybuffer";
     //fastHash for page caches 
     //Send the proper header information along with the request
     http.setRequestHeader("Content-type", "application/json");
     http.onreadystatechange = function() {//Call a function when the state changes.
         if(http.readyState == 4 && http.status == 200) {
-            var tr = unpack(JSON.parse(http.responseText));
+            var tr = unpack(JSON.parse(fromBuffer(http.response)));
             tr.id.__ = id;
             tr.rx = _.now();
             callback && callback(tr);
@@ -106,7 +107,7 @@ function savePON(json, callback, load) {
     }
     var pj = pack(json);
     pj.id = id;
-    http.send(JSON.stringify(pj));
+    http.send(toBuffer(JSON.stringify(pj)));
 }
 
 // LZW-compress a string
@@ -299,6 +300,7 @@ function toBuffer(str) {
 }
 
 function fromBuffer(arr) {
+	arr = new UInt8Array(arr);
 	var buf = new Array(arr.length);
 	for (var i = 0, arrLen = arr.length; i < arrLen; i++) {
 		buf[i] = arr[i];
