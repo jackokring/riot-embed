@@ -16,7 +16,7 @@ function riotEmbed(ob) {
         alert('Object checksum: ' + makeHash(ob.toString()));
         return riotEmbed;
     }
-    riotEmbed.VERSION = '1.0.5e';
+    riotEmbed.VERSION = '1.0.5f';
     riotEmbed._saveState = __;
     riotEmbed.url = 'https://www.kring.co.uk/dbase.php';//CHANGE IF NEEDED
 
@@ -165,6 +165,7 @@ function encodeLZW(s, bounce) {
 }
 
 function encodeSUTF(s) {
+	s = mangleUTF(s);
     var out = [];
     var last = 0;
     var flag = false;
@@ -272,6 +273,7 @@ function decodeSUTF(s) {
 	    }
 	    out.push(String.fromCharCode(k));
     });
+    out = mangleUTF(out);
     return out;
 }
 
@@ -279,6 +281,7 @@ function decodePON(s) {
     return decodeLZW(s, true);
 }
 
+//UTF mangling
 function encodeUTF(s) {
     return unescape(encodeURIComponent(s));
 }
@@ -287,6 +290,21 @@ function decodeUTF(s) {
     return decodeURIComponent(escape(s));
 }
 
+function mangleUTF(s) {
+	var temp = 0;
+	_.each(s, function(v, k) {
+		if(v & 128 == 0 || v & 32 == 0 || v & 64 == 0) return;//aux or 2 byte or ascii
+		//must be 1st of 3 byte
+		temp = v & 15;//lower nibble
+		v &= 240;//255 - 15
+		v |= (s[k + 1] & 63) >> 2;
+		s[k + 1] &= 195;//3 + 64 + 128
+		s[k + 1] |= temp << 2;
+	});
+	return s;//just in case
+}
+
+//A BWT
 function encodeBWT(data) {
     var size = data.length;
     var buff = data + data;
