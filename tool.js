@@ -16,7 +16,7 @@ function riotEmbed(ob) {
         alert('Object checksum: ' + makeHash(ob.toString()));
         return riotEmbed;
     }
-    riotEmbed.VERSION = '1.0.5f';
+    riotEmbed.VERSION = '1.0.5g';
     riotEmbed._saveState = __;
     riotEmbed.url = 'https://www.kring.co.uk/dbase.php';//CHANGE IF NEEDED
 
@@ -124,10 +124,8 @@ function savePON(json, callback, load) {
 // Under these conditions many unused dictionary entries will be wasted on long
 // highly redundant inputs. It is a feature for pre BWT packed PONs.
 //===============================================================================
-function encodeLZW(s, bounce) {
-    s = encodeUTF(s);
+function encodeLZW(data, bounce) {
     var dict = {};
-    var data = (s + '').split('');
     data = encodeSUTF(data);
     var out = [];
     var currChar;
@@ -165,7 +163,7 @@ function encodeLZW(s, bounce) {
 }
 
 function encodeSUTF(s) {
-	s = mangleUTF(s);
+	s = mangleUTF(encodeUTF(s).split(''));
     var out = [];
     var last = 0;
     var flag = false;
@@ -240,7 +238,7 @@ function decodeLZW(s, bounce) {
         oldPhrase = phrase;
     }
     out = decodeSUTF(out);
-    return decodeUTF(out.join(''));
+    return out.join('');
 }
 
 function decodeSUTF(s) {
@@ -273,7 +271,7 @@ function decodeSUTF(s) {
 	    }
 	    out.push(String.fromCharCode(k));
     });
-    out = mangleUTF(out);
+    out = decodeUTF(mangleUTF(out).join(''));
     return out;
 }
 
