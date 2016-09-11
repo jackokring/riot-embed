@@ -162,6 +162,38 @@ function encodeLZW(s, bounce) {
     return out.join('');
 }
 
+function encodeSUTF(s) {
+    var out = [];
+    var last = 0;
+    var flag = false;
+    var first = true;
+    _.each(s, function(val) {
+        k = val.charCodeAt();
+	    if(k > 127) {
+    		if(k & 64 == 0) {
+    		    if(first && flag) {
+    		        first = false;
+    		        if(k == last) {
+    		            return;////1st extension byte
+    		        } else {
+    		            last = k;
+    		            flag = false;;//1st extension 
+    		        }
+    		    } else {
+    		        if(flag) k += 64;
+    		        first = true;//extension byte
+    		        flag = false;
+    		    }
+    		} else {
+    			flag = (k & 32 != 0);//hi page byte (flag two extensions)
+    		}
+        } else {
+            //ascii byte
+	    }
+	    out.push(String.fromCharCode(k));
+    });
+}
+
 function encodePON(s) {
     return encodeLZW(s, true);
 }
@@ -200,6 +232,38 @@ function decodeLZW(s, bounce) {
         oldPhrase = phrase;
     }
     return decodeUTF(out.join(''));
+}
+
+function decodeSUTF(s) {
+    var out = [];
+    var last = 0;
+    var flag = false;
+    var first = true;
+    _.each(s, function(val) {
+        k = val.charCodeAt();
+	    if(k > 127) {
+	        if(first) {
+	            first = false;
+	            flag = (k & 32 != 0);
+	        } else {
+	            if(k & 64 != 0 && flag) {
+	                out.push(String.fromCharCode(last));
+	                k -= 64;
+	                first = true;
+	            } else {
+	                if(flag) {
+	                    last = k;
+	                    flag = false;
+	                } else {
+	                    first = true;
+	                }
+	            }
+	        }
+        } else {
+            //ascii byte
+	    }
+	    out.push(String.fromCharCode(k));
+    });
 }
 
 function decodePON(s) {
