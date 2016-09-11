@@ -129,7 +129,7 @@ function encodeLZW(s, bounce) {
             if(code < 65536) {//limit
                 dict['_' + phrase + currChar] = code;
                 code++;
-                if(bounce && codeL != code - 1) {
+                if(bounce && codeL != code - 2) {//code -- and one before would be last symbol out
                     _.each(phrase.split(''), function (chr) {
                         if(code < 65536 && !dict['_' + phrase + chr]) {
                             dict['_' + phrase + chr] = code;
@@ -174,7 +174,7 @@ function decodeLZW(s, bounce) {
         if(code < 65536) {
             dict['_'+code] = oldPhrase + currChar;
             code++;
-            if(bounce && !dict['_'+currCode]) {
+            if(bounce && !dict['_'+currCode]) {//the special lag
                 _.each(oldPhrase.split(''), function (chr) {
                     if(code < 65536 && !dict['_' + code]) {
                         dict['_' + code] = oldPhrase + chr;
