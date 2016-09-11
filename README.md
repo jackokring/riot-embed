@@ -3,8 +3,8 @@
 Looking at *riot.js* as a useful web technology, I decided to investigate the option to embed it within *wordpress* using a header and footer scripts plugin. Adding some script tags to the footer (my Google Analytics tags went in the header), allows both *less.js* and *riot.js* to work within all page and post bodies. This might be useful to improve the basic wordpress theme, and even of use in the more expressive Divi theme. Just include the `<my-custom>` tags and the `<script type="riot/tag" src="somewhere.on.github/my-custom.tag">` tags for the things you want to use, on the pages you want to use them on.
 
 ```
-<script src="https://rawgit.com/less/less.js/master/dist/less.min.js"></script>
-<script src="https://rawgit.com/riot/riot/master/riot%2Bcompiler.min.js"></script>
+<script src="https://rawgit.com/jackokring/riot-embed/master/less.min.js"></script>
+<script src="https://rawgit.com/jackokring/riot-embed/master/riot%2Bcompiler.min.js"></script>
 <script src="https://rawgit.com/jackokring/riot-embed/master/underscore.min.js"></script>
   <!-- mount this app -->
   <script>
