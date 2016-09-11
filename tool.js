@@ -16,7 +16,7 @@ function riotEmbed(ob) {
         alert('Object checksum: ' + makeHash(ob.toString()));
         return riotEmbed;
     }
-    riotEmbed.VERSION = '1.0.5';
+    riotEmbed.VERSION = '1.0.5a';
     riotEmbed._saveState = __;
     riotEmbed.url = 'https://www.kring.co.uk/dbase.php';//CHANGE IF NEEDED
 
@@ -175,7 +175,7 @@ function decodeLZW(s, bounce) {
             dict['_'+code] = oldPhrase + currChar;
             code++;
             if(bounce && !dict['_'+currCode]) {
-                _.each(phrase.split(''), function (chr) {
+                _.each(oldPhrase.split(''), function (chr) {
                     if(code < 65536 && !dict['_' + code]) {
                         dict['_' + code] = oldPhrase + chr;
                         code++;
