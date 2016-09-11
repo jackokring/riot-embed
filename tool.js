@@ -16,7 +16,7 @@ function riotEmbed(ob) {
         alert('Object checksum: ' + makeHash(ob.toString()));
         return riotEmbed;
     }
-    riotEmbed.VERSION = '1.0.5b';
+    riotEmbed.VERSION = '1.0.5c';
     riotEmbed._saveState = __;
     riotEmbed.url = 'https://www.kring.co.uk/dbase.php';//CHANGE IF NEEDED
 
@@ -128,6 +128,7 @@ function encodeLZW(s, bounce) {
     s = encodeUTF(s);
     var dict = {};
     var data = (s + '').split('');
+    data = encodeSUTF(data);
     var out = [];
     var currChar;
     var phrase = data[0];
@@ -192,6 +193,7 @@ function encodeSUTF(s) {
 	    }
 	    out.push(String.fromCharCode(k));
     });
+    return out;
 }
 
 function encodePON(s) {
@@ -231,6 +233,7 @@ function decodeLZW(s, bounce) {
         }
         oldPhrase = phrase;
     }
+    out = decodeSUTF(out);
     return decodeUTF(out.join(''));
 }
 
@@ -264,6 +267,7 @@ function decodeSUTF(s) {
 	    }
 	    out.push(String.fromCharCode(k));
     });
+    return out;
 }
 
 function decodePON(s) {
