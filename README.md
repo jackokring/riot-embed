@@ -3,25 +3,18 @@
 Looking at *riot.js* as a useful web technology, I decided to investigate the option to embed it within *wordpress* using a header and footer scripts plugin. Adding some script tags to the footer (my Google Analytics tags went in the header), allows both *less.js* and *riot.js* to work within all page and post bodies. This might be useful to improve the basic wordpress theme, and even of use in the more expressive Divi theme. Just include the `<my-custom>` tags and the `<script type="riot/tag" src="somewhere.on.github/my-custom.tag">` tags for the things you want to use, on the pages you want to use them on.
 
 ```
+<script src="https://rawgit.com/jackokring/riot-embed/master/less.min.js"></script>
+<script src="https://rawgit.com/jackokring/riot-embed/master/riot%2Bcompiler.min.js"></script>
+<script src="https://rawgit.com/jackokring/riot-embed/master/underscore.min.js"></script>
 <script>
-function __loading(script) {
-  var site = 'https://rawgit.com/jackokring/riot-embed/master/';
-  var s = document.createElement("script");
-  s.src = site + script;
-  var s0 = document.getElementsByTagName('script')[0];
-  s0.parentNode.insertBefore(s, s0);
-}
-__loading('less.min.js');
-__loading('riot%2Bcompiler.min.js');
-__loading('underscore.min.js');
-riot.parsers.css.less = function(tagName, style) {
-  var css = ''
-  less.render(style, {}, function(error, output) {
-    css = output.css
-  })
-  return css
-}
-riot.mount('*')
+  riot.parsers.css.less = function(tagName, style) {
+    var css = '';
+    less.render(style, {}, function(error, output) {
+      css = output.css;
+    })
+    return css;
+  }
+  riot.mount('*');
 </script>
 ```
 
@@ -41,4 +34,6 @@ I have made QUnit testing be available. To assist in stability the dependant js 
 
 When you want to start developing your own tags, and you have no access to your *wordpress* server's file space except for the *worpress* administration interface, you have few options. The `dbase.php` file has to be placed in your wordpress install folder to access server side features. This could eventually be done via a *wordpress* plugin, but that is for later. As placing this file is a one off task, just ask an admin for help.
 
-The client side JavaScript can be hosted on *GitHub*. It has a very nice code editor, and the site is easy to use without much of the hastle of command line tools. The suggest process is to join *GitHub* and clone this repository. You can then add more scripts or tags, and then also submit pull requests when you get to know how. *rawgit.com* can then serve files while in development, as the RAW option for viewing files using *github.com* will not work correctly. If your web traffic goes up to high levels, this service is not suitable. If you get to this point it then becomes possible to clone the git repository and 
+The client side JavaScript can be hosted on *GitHub*. It has a very nice code editor, and the site is easy to use without much of the hastle of command line tools. The suggest process is to join *GitHub* and clone this repository. You can then add more scripts or tags, and then also submit pull requests when you get to know how. *rawgit.com* can then serve files while in development, as the RAW option for viewing files using *github.com* will not work correctly. If your web traffic goes up to high levels, this service is not suitable.
+
+If you get to that point, then clone the git repository onto a suitable server, and alter the `https://rawgit.com/jackokring/riot-embed/master/` prefix in the above source which you placed in your *wordpress* footer, to the URL where you cloned the repository. The dynamic option to just have one path prefix to alter, has issues with page loading order.
