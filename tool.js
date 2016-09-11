@@ -110,6 +110,20 @@ function savePON(json, callback, load) {
 }
 
 // LZW-compress a string
+//==============================================================================
+// The bounce parameter if true adds extra entries for faster dictionary growth.
+// Usually LZW dictionary grows sub linear on input chars, and it is of note
+// that after a BWT, the phrase contains a good MTF estimate and so maybe fine
+// to append each of its chars to many dictionary entries. In this way the
+// growth of entries becomes "almost" linear. The dictionary memory foot print
+// becomes quadratic. Short to medium inputs become even smaller. Long input
+// lengths may become slightly larger on not using dictionary entries integrated
+// over input length, but will most likely be slightly smaller.
+
+// DO NOT USE bounce (=false) IF NO BWT BEFORE.
+// Under these conditions many unused dictionary entries will be wasted on long
+// highly redundant inputs. It is a feature for pre BWT packed PONs.
+//===============================================================================
 function encodeLZW(s, bounce) {
     s = encodeUTF(s);
     var dict = {};
