@@ -288,6 +288,24 @@ function decodeUTF(s) {
     return decodeURIComponent(escape(s));
 }
 
+function toBuffer(str) {
+	arr = encodeSUTF(str);
+	var buf = new ArrayBuffer(arr.length);
+	var bufView = new Uint8Array(buf);
+	for (var i = 0, arrLen = arr.length; i < arrLen; i++) {
+		bufView[i] = arr[i];
+	}
+	return buf;
+}
+
+function fromBuffer(arr) {
+	var buf = new Array(arr.length);
+	for (var i = 0, arrLen = arr.length; i < arrLen; i++) {
+		buf[i] = arr[i];
+	}
+	return decodeSUTF(arr);
+}
+
 function mangleUTF(s) {
 	var temp = 0;
 	_.each(s, function(v, k) {
