@@ -110,13 +110,14 @@ function savePON(json, callback, load) {
 }
 
 // LZW-compress a string
-function encodeLZW(s) {
+function encodeLZW(s, bounce) {
     s = encodeUTF(s);
     var dict = {};
     var data = (s + '').split('');
     var out = [];
     var currChar;
     var phrase = data[0];
+    var codeL = 0;
     var code = 256;
     for (var i=1; i<data.length; i++) {
         currChar=data[i];
@@ -124,10 +125,18 @@ function encodeLZW(s) {
             phrase += currChar;
         }
         else {
-            out.push(phrase.length > 1 ? dict['_'+phrase] : phrase.charCodeAt(0));
+            out.push(codeL = phrase.length > 1 ? dict['_'+phrase] : phrase.charCodeAt(0));
             if(code < 65536) {//limit
                 dict['_' + phrase + currChar] = code;
                 code++;
+                if(bounce && codeL != code - 2) {
+                    _.reduce(phrase.split(''), function (memo, chr) {
+                        if(code < 65536) {
+                            dict['_' + phrase + chr] = code;
+                            code++;
+                        }
+                    }, dict);
+                }
             }
             phrase=currChar;
         }
