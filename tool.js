@@ -16,7 +16,7 @@ function riotEmbed(ob) {
         alert('Object checksum: ' + makeHash(ob.toString()));
         return riotEmbed;
     }
-    riotEmbed.VERSION = '1.0.5c';
+    riotEmbed.VERSION = '1.0.5d';
     riotEmbed._saveState = __;
     riotEmbed.url = 'https://www.kring.co.uk/dbase.php';//CHANGE IF NEEDED
 
@@ -146,9 +146,10 @@ function encodeLZW(s, bounce) {
                 code++;
                 if(bounce && codeL != code - 2) {//code -- and one before would be last symbol out
                     _.each(phrase.split(''), function (chr) {
-                        if(code < 65536 && !dict['_' + phrase + chr]) {
-                            dict['_' + phrase + chr] = code;
-                            code++;
+                        if(code < 65536) {
+                        	while(dict['_' + phrase + chr]) phrase += chr;
+                            	dict['_' + phrase + chr] = code;
+                            	code++;
                         }
                     });
                 }
@@ -203,6 +204,7 @@ function encodePON(s) {
 // Decompress an LZW-encoded string
 function decodeLZW(s, bounce) {
     var dict = {};
+    var dictI = {};
     var data = (s + '').split('');
     var currChar = data[0];
     var oldPhrase = currChar;
@@ -221,11 +223,14 @@ function decodeLZW(s, bounce) {
         currChar = phrase.charAt(0);
         if(code < 65536) {
             dict['_'+code] = oldPhrase + currChar;
+            dictI['_' + oldPhrase + chr] = code;
             code++;
             if(bounce && !dict['_'+currCode]) {//the special lag
                 _.each(oldPhrase.split(''), function (chr) {
-                    if(code < 65536 && !dict['_' + code]) {
+                    if(code < 65536) {
+                    	while(dictI['_' + oldPhrase + chr]) oldPhrase += chr; 
                         dict['_' + code] = oldPhrase + chr;
+                        dictI['_' + oldPhrase + chr] = code;
                         code++;
                     }
                 });
