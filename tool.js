@@ -131,7 +131,7 @@ function encodeLZW(s, bounce) {
                 code++;
                 if(bounce && codeL != code - 2) {
                     _.each(phrase.split(''), function (chr) {
-                        if(code < 65536) {
+                        if(code < 65536 && !dict['_' + phrase + chr]) {
                             dict['_' + phrase + chr] = code;
                             code++;
                         }
@@ -176,7 +176,7 @@ function decodeLZW(s, bounce) {
             code++;
             if(bounce && !dict['_'+currCode]) {
                 _.each(phrase.split(''), function (chr) {
-                    if(code < 65536) {
+                    if(code < 65536 && !dict['_' + code]) {
                         dict['_' + code] = oldPhrase + chr;
                         code++;
                     }
