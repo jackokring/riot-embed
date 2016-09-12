@@ -16,7 +16,7 @@ function riotEmbed(ob) {
         alert('Object checksum: ' + makeHash(ob.toString()));
         return riotEmbed;
     }
-    riotEmbed.VERSION = '1.0.5h';
+    riotEmbed.VERSION = '1.0.5i';
     riotEmbed._saveState = __;
     riotEmbed.url = 'https://www.kring.co.uk/dbase.php';//CHANGE IF NEEDED
 
@@ -315,9 +315,9 @@ function mangleUTF(s) {
 		//must be 1st of 3 byte
 		temp = v & 15;//lower nibble
 		v &= 240;//255 - 15
-		v |= (s[k + 1] & 63) >> 2;
-		s[k + 1] &= 195;//3 + 64 + 128
-		s[k + 1] |= temp << 2;
+		v |= s[k + 1] & 16;
+		s[k + 1] &= 240;
+		s[k + 1] |= temp;
 	});
 	return s;//just in case
 }
