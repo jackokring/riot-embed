@@ -1,4 +1,4 @@
-//      RiotEmbed tool.js 1.0.5
+//      RiotEmbed tool.js 1.0.6
 //      https://kring.co.uk
 //      (c) 2016 Simon Jackson, K Ring Technologies Ltd
 //      MIT, like as he said. And underscored :D
@@ -16,12 +16,12 @@ function riotEmbed(ob) {
         alert('Object checksum: ' + makeHash(ob.toString()));
         return riotEmbed;
     }
-    riotEmbed.VERSION = '1.0.5j';
+    riotEmbed.VERSION = '1.0.6';
     riotEmbed._saveState = __;
     riotEmbed.url = 'https://www.kring.co.uk/dbase.php';//CHANGE IF NEEDED
 
 //====================================
-// PON handling
+// PON handling and hashing codes
 //====================================
 
 function appPON(json, hash, callback) {
@@ -112,6 +112,7 @@ function savePON(json, callback, load) {
     http.send(toBuffer(JSON.stringify(pj)));
 }
 
+//==============================================================================
 // LZW-compress a string
 //==============================================================================
 // The bounce parameter if true adds extra entries for faster dictionary growth.
@@ -203,7 +204,9 @@ function encodePON(s) {
     return encodeLZW(s, true);
 }
 
+//=================================================
 // Decompress an LZW-encoded string
+//=================================================
 function decodeLZW(s, bounce) {
     var dict = {};
     var dictI = {};
@@ -282,7 +285,9 @@ function decodePON(s) {
     return decodeLZW(s, true);
 }
 
-//UTF mangling
+//=================================================
+// UTF mangling with ArrayBuffer mappings
+//=================================================
 function encodeUTF(s) {
     return unescape(encodeURIComponent(s));
 }
@@ -324,7 +329,9 @@ function mangleUTF(s) {
 	return s;//just in case
 }
 
-//A BWT
+//===============================================
+//A Burrows Wheeler Transform of strings
+//===============================================
 function encodeBWT(data) {
     var size = data.length;
     var buff = data + data;
@@ -364,6 +371,12 @@ function decodeBWT(top, data) { //JSON
     }, []).join('');
 }
 
+//==================================================
+// Two functions to do a dictionary effectiveness
+// split of what to compress. This has the effect
+// of applying an effective dictionary size bigger
+// than would otherwise be.
+//==================================================
 function tally(data) {
     return _.reduce(data.split(), function(memo, charAt) {
         memo[charAt]++;//increase
@@ -381,16 +394,30 @@ function splice(data) {
     }, []);
 }
 
-//a packer and unpacker with good efficiency
+//=====================================================
+// A packer and unpacker with good efficiency
+//=====================================================
+// These are the ones to call, and the rest sre maybe
+// useful, but can be considered as foundations for
+// these functions. some block length management is
+// built in.
 function pack(data) {
-    var bwt = encodeBWT(JSON.stringify(data));
+	//limits
+	var str = JSON.stringify(data);
+	var chain = {};
+	if(str.length > 524288) {
+		chain = pack(str.substring(524288));
+		str = str.substring(0, 524288);
+	}
+    var bwt = encodeBWT(str);
     var mix = splice(bwt.data);
     
     mix = _.map(mix, encodePON);
     data = _.extendOwn({}, data, {
         top: bwt.top,
         /* tally: encode_tally(tally), */
-        mix: mix
+        mix: mix,
+        chn: chain
     });
     return data;
 }
@@ -408,7 +435,12 @@ function unpack(got) {
         /* var key = lzw.charAt(0);//get seek char */
         memo += lzw.substring(1, lzw.length);//concat
     }, '');
-    return _.extendOwn(JSON.parse(decodeBWT(top, mix)), _.omit(got, 'top', 'mix'));
+    var chain = got.chn;
+    var res = decodeBWT(top, mix);
+	if(_.has(chain, 'chn')) {
+		res += unpack(chain.chn);
+	}
+    return _.extendOwn(JSON.parse(res), _.omit(got, 'top', 'mix', 'chn'));
 }
 
 function noConflict() {
