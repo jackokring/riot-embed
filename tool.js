@@ -16,7 +16,7 @@ function riotEmbed(ob) {
         alert('Object checksum: ' + makeHash(ob.toString()));
         return riotEmbed;
     }
-    riotEmbed.VERSION = '1.0.5i';
+    riotEmbed.VERSION = '1.0.5j';
     riotEmbed._saveState = __;
     riotEmbed.url = 'https://www.kring.co.uk/dbase.php';//CHANGE IF NEEDED
 
@@ -87,11 +87,11 @@ function stringifyPreJS(s) {
 }
 
 function savePON(json, callback, load) {
-    json.tx = _.now();
+    var tx = _.now();
     var http = new XMLHttpRequest();
     var id = json.id;//special
     var rest = load ? 'GET' : 'PUT';
-    json = _.omit(json, 'id');
+    json = _.omit(json, 'id', '__');
     http.open(rest, url + '?' + fastHash(JSON.stringify(id)), true);
     http.responseType = "arraybuffer";
     //fastHash for page caches 
@@ -100,8 +100,10 @@ function savePON(json, callback, load) {
     http.onreadystatechange = function() {//Call a function when the state changes.
         if(http.readyState == 4 && http.status == 200) {
             var tr = unpack(JSON.parse(fromBuffer(http.response)));
-            tr.id.__ = id;
-            tr.rx = _.now();
+            if(!tr.__) tr.__ = {};
+            tr.__.id = id;
+            tr.__.tx = tx;
+            tr.__.rx = _.now();
             callback && callback(tr);
         }
     }
