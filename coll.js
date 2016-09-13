@@ -80,3 +80,5 @@ function _$(obj) {
     
   }
 }
+
+_$.prototype = Array;
