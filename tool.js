@@ -1,4 +1,4 @@
-//      RiotEmbed tool.js 1.0.7
+//      RiotEmbed tool.js 1.0.8
 //      https://kring.co.uk
 //      (c) 2016 Simon Jackson, K Ring Technologies Ltd
 //      MIT, like as he said. And underscored :D
@@ -16,7 +16,7 @@ function riotEmbed(ob) {
         alert('Object checksum: ' + makeHash(ob.toString()));
         return riotEmbed;
     }
-    riotEmbed.VERSION = '1.0.7';
+    riotEmbed.VERSION = '1.0.8';
     riotEmbed._saveState = __;
     riotEmbed.url = 'https://www.kring.co.uk/dbase.php';//CHANGE IF NEEDED
 
@@ -430,9 +430,6 @@ function unpack(got) {
     var mix = got.mix || [];
     
     mix = _.map(mix, decodeBounce);
-    mix.sort(function(a, b) {
-        return a.charCodeAt(0) - b.charCodeAt(0);
-    });
     mix = _.reduce(mix, function(memo, lzw) {
         /* var key = lzw.charAt(0);//get seek char */
         memo += lzw.substring(1, lzw.length);//concat
