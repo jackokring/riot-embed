@@ -1,4 +1,4 @@
-//      RiotEmbed tool.js 1.0.6
+//      RiotEmbed tool.js 1.0.7
 //      https://kring.co.uk
 //      (c) 2016 Simon Jackson, K Ring Technologies Ltd
 //      MIT, like as he said. And underscored :D
@@ -16,7 +16,7 @@ function riotEmbed(ob) {
         alert('Object checksum: ' + makeHash(ob.toString()));
         return riotEmbed;
     }
-    riotEmbed.VERSION = '1.0.6a';
+    riotEmbed.VERSION = '1.0.7';
     riotEmbed._saveState = __;
     riotEmbed.url = 'https://www.kring.co.uk/dbase.php';//CHANGE IF NEEDED
 
@@ -89,9 +89,10 @@ function stringifyPreJS(s) {
 function savePON(json, callback, load) {
     var tx = _.now();
     var http = new XMLHttpRequest();
-    var id = json.id;//special
+    var id = json._i;//special
+    var sp = json.__;
     var rest = load ? 'GET' : 'PUT';
-    json = _.omit(json, 'id', '__');
+    json = _.omit(json, '_i', '__');
     http.open(rest, url + '?' + fastHash(JSON.stringify(id)), true);
     http.responseType = "arraybuffer";
     //fastHash for page caches 
@@ -101,14 +102,15 @@ function savePON(json, callback, load) {
         if(http.readyState == 4 && http.status == 200) {
             var tr = unpack(JSON.parse(fromBuffer(http.response)));
             if(!tr.__) tr.__ = {};
-            tr.__.id = id;
+            tr.__._i = id;
             tr.__.tx = tx;
             tr.__.rx = _.now();
             callback && callback(tr);
         }
     }
     var pj = pack(json);
-    pj.id = id;
+    pj._i = id;
+    pj.__ = __;
     http.send(toBuffer(JSON.stringify(pj)));
 }
 
@@ -413,12 +415,12 @@ function pack(data) {
     var mix = splice(bwt.data);
     
     mix = _.map(mix, encodeBounce);
-    data = _.extendOwn({}, data, {
+    data = {
         top: bwt.top,
         /* tally: encode_tally(tally), */
         mix: mix,
         chn: chain
-    });
+    };
     return data;
 }
 
@@ -440,7 +442,7 @@ function unpack(got) {
 	if(_.has(chain, 'chn')) {
 		res += unpack(chain.chn);
 	}
-    return _.extendOwn(JSON.parse(res), _.omit(got, 'top', 'mix', 'chn'));
+    return JSON.parse(res);
 }
 
 function noConflict() {
