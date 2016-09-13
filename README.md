@@ -48,4 +48,9 @@ These are enough to bring DB remote acces to riot, and kind of replace *backbone
 
 # Packed Object Notation (**PON**)
 
-The compression includes some of my ideas on the subject, and likely is not as fast as some would like. Some coding is used to keep bits off the wire and problems with the default setting of *XmlHttpRequest* in js. Usefully this also assists in turning *Unicode* into a more efficient 8 bit code (*SUTF*) which does help with the modified *LZW* compression (a pre *BWT* with implied context dictionary compaction and dictionary growth acceleration). *SUTF* also preserves all *ASCII* characters.
+The compression includes some of my ideas on the subject, and likely is not as fast as some would like. Some coding is used to keep bits off the wire and problems with the default setting of *XmlHttpRequest* in js. Usefully this also assists in turning *Unicode* into a more efficient 8 bit code (*SUTF*) which does help with the modified *LZW* compression (a pre *BWT* with implied context dictionary compaction and dictionary growth acceleration). *SUTF* also preserves all *ASCII* characters. Two special property tags on an object are not packed. These are for identifying the object and for passing auxilliary information.
+
+* `_i` The ID of the object.
+* `__` Anything else that might need to pass unpacked.
+
+They are both for internal use, and you are told here so you don't overwrite them.
