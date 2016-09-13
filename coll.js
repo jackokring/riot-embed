@@ -8,9 +8,7 @@ function _$(obj) {
     
   }
 
-  function join() {
-    
-  }
+  /* function join() */
   
   function push() {
     
@@ -52,9 +50,7 @@ function _$(obj) {
     
   }
   
-  function forEach() {
-    
-  }
+  /* function forEach() */
   
   function map() {
     
@@ -64,21 +60,13 @@ function _$(obj) {
     
   }
   
-  function every() {
-    
-  }
+  /* function every() */
   
-  function some() {
-    
-  }
+  /* function some() */
   
-  function reduce() {
-    
-  }
+  /* function reduce() */
   
-  function reduceRight() {
-    
-  }
+  /* function reduceRight() */
 }
 
 _$.prototype = Array;
