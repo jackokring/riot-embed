@@ -39,10 +39,10 @@ Add the plugin into *wordpress* and in any post `[sc name="riot" tag="whatever-c
 
 There are 4 objects added to to assist in riot app devekopment. They could also be used with other things.
 
-* `__` A libray for compressed IO and some transforms used.
-* `_$` A keyed collection object.
-* `$_` A collection filter for more complex operations.
-* `$$` An adapter to perform collection joins and abstraction.
+* `__` A libray for compressed IO and some transforms used. *tool.js*
+* `_$` A keyed collection object. *coll.js*
+* `$_` A collection filter for more complex operations. *filt.js*
+* `$$` An adapter to perform collection joins and abstraction. *adapt.js*
 
 These are enough to bring DB remote acces to riot, and kind of replace *backbone.js* in the development stack. `_` *underscore.js* is included on `_`, and I think wordpress already includes *jQuery* seen as `$` in code. Well at least it does with the *Divi* theme. Riot is then just dealing with the templating, with maybe a little assist from `_`.
 
