@@ -45,3 +45,7 @@ There are 4 objects added to to assist in riot app devekopment. They could also 
 * `$$` An adapter to perform collection joins and abstraction.
 
 These are enough to bring DB remote acces to riot, and kind of replace *backbone.js* in the development stack. `_` *underscore.js* is included on `_`, and I think wordpress already includes *jQuery* seen as `$` in code. Well at least it does with the *Divi* theme. Riot is then just dealing with the templating, with maybe a little assist from `_`.
+
+# Packed Object Notation (**PON**)
+
+The compression includes some of my ideas on the subject, and likely is not as fast as some would like. Some coding is used to keep bits off the wire and problems with the default setting of *XmlHttpRequest* in js. Usefully this also assists in turning *Unicode* into a more efficient 8 bit code (*SUTF*) which does help with the modified *LZW* compression (a pre *BWT* with implied context dictionary compaction and dictionary growth acceleration). It also preserves all *ASCII* characters.
