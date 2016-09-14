@@ -36,8 +36,6 @@ function _$(obj, quick) {
     this._idx.copyWithin(arguments);
     super.copyWithin(arguments);
   }
-
-  /* function join() */
   
   function _spush(el) {
     return super.push(el);
@@ -82,6 +80,14 @@ function _$(obj, quick) {
     return this.reverse();
   }
   
+  function filter() {
+    return new _$(super.filter(arguments));
+  }
+  
+  function map() {
+    return new _$(super.map(arguments));
+  }
+  
   function sort() {
     
   }
@@ -93,24 +99,6 @@ function _$(obj, quick) {
   function lastIndexOf() {
     
   }
-  
-  /* function forEach() */
-  
-  function map() {
-    
-  }
-  
-  function filter() {
-    
-  }
-  
-  /* function every() */
-  
-  /* function some() */
-  
-  /* function reduce() */
-  
-  /* function reduceRight() */
 }
 
 _$.prototype = Array;
