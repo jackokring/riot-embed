@@ -13,8 +13,9 @@ function _$(obj, quick) {
   } else {
     this._idx = new Array();
     var inner = this;
-    _.each(obj, function(el) {
-      inner.push(el);
+    _.each(obj, function(el, idx) {
+      inner[idx] = el;
+      inner._idx[idx] = el;
     });
   }
   return this;
