@@ -25,7 +25,7 @@ function _$(obj, quick) {
   function concat(all) {
     var res;
     if(all instanceof _$) {
-      res = new _$(this.prototype.concat(all), this._idx.concat(all._idx));
+      res = new _$(super.concat(all), this._idx.concat(all._idx));// super === this.prototype ...
     } else {
       res = new _$(this);
       _.each(arguments, function(el) {
