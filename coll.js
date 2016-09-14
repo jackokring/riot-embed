@@ -1,10 +1,10 @@
 //========================================
-// Keyed collection _$
+// Keyed collection _$  1.0.0
 //========================================
 
 function _$(obj, quick) {
   
-  if(_.isFunction(obj)) /* OK? */ ;
+  _$.VERSION = "1.0.0";
   
   if(quick) {
     this._idx = new Array(quick);
