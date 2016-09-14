@@ -2,14 +2,22 @@
 // Keyed collection _$
 //========================================
 
-function _$(obj) {
+function _$(obj, quick) {
   
-  this._idx = new Array();
-  var inner = this;
-  _.each(obj, function(el) {
-    inner.push(el);
-  });
-  return this;
+  if(quick) {
+    this._idx = new Array(quick);
+    var inner = this;
+    _.each(obj, function(el) {
+      inner._spush(el);
+    });
+  } else {
+    this._idx = new Array();
+    var inner = this;
+    _.each(obj, function(el) {
+      inner.push(el);
+    });
+  }
+  return res;
   
   function concat(all) {
     var res = new _$(this);
@@ -31,6 +39,10 @@ function _$(obj) {
 
   /* function join() */
   
+  function _spush(el) {
+    return super.push(el);
+  }
+  
   function push(el) {
     this._idx.push(el._i);//becomes finable
     return super.push(el);
@@ -51,10 +63,8 @@ function _$(obj) {
     return super.unshift(el);
   }
   
-  function slice(arguments) {
-    var res = new _$();
-    res._idx = this._idx.slice(arguments);
-    = this.slice(arguments);
+  function slice() {
+    return new _$(this.slice(arguments), this._idx.slice(arguments));
   }
   
   function splice() {
