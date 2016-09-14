@@ -40,10 +40,6 @@ function _$(obj, quick) {
     super.copyWithin(arguments);
   }
   
-  function _spush(el) {
-    return super.push(el);
-  }
-  
   function push(el) {
     this._idx.push(el._i);//becomes finable
     return super.push(el);
@@ -82,6 +78,8 @@ function _$(obj, quick) {
     this._idx.reverse();
     return this.reverse();
   }
+  
+  //==== optimze below later
   
   function filter() {
     var idx = Array();
