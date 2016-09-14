@@ -16,6 +16,17 @@ function _$(obj) {
     _.each(all, function(el) {
       res.push(el);
     });
+    return res;
+  }
+  
+  function fill(el, start, end) {
+    this._idx.fill(el._i, start, end);
+    super.fill(arguments);
+  }
+  
+  function copyWithin() {
+    this._idx.copyWithin(arguments);
+    super.copyWithin(arguments);
   }
 
   /* function join() */
@@ -40,8 +51,10 @@ function _$(obj) {
     return super.unshift(el);
   }
   
-  function slice() {
-    
+  function slice(arguments) {
+    var res = new _$();
+    res._idx = this._idx.slice(arguments);
+    = this.slice(arguments);
   }
   
   function splice() {
