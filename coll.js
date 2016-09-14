@@ -23,10 +23,15 @@ function _$(obj, quick) {
   return this;
   
   function concat(all) {
-    var res = new _$(this);
-    _.each(all, function(el) {
-      res.push(el);
-    });
+    var res;
+    if(all instanceof _$) {
+      res = new _$(this.prototype.concat(all), this._idx.concat(all._idx));
+    } else {
+      res = new _$(this);
+      _.each(arguments, function(el) {
+        res.push(el);
+      });
+    }
     return res;
   }
   
