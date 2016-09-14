@@ -91,14 +91,6 @@ function _$(obj, quick) {
   function sort() {
     
   }
-  
-  function indexOf() {
-    
-  }
-  
-  function lastIndexOf() {
-    
-  }
 }
 
 _$.prototype = Array;
