@@ -68,7 +68,13 @@ function _$(obj, quick) {
   }
   
   function splice() {
-    
+    var x = Array.from(arguments);
+    _.map(x, function(el, key) {
+      if(key < 2) return el;
+      return el._i;
+    });
+    this._idx.splice(x);
+    return super.splice(arguments);
   }
   
   function reverse() {
