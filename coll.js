@@ -22,9 +22,15 @@ function _$(obj, quick) {
   }
   return this;
   
-  function concat(all) {
+  function of() {
+    return _$(arguments, _.map(arguments, function() {
+      return undefined;
+    }));
+  }
+  
+  function concat(all) {// or ONE _$ to make a collection of both
     var res;
-    if(all instanceof _$) {
+    if(all instanceof _$) {// N.B.
       res = new _$(super.concat(all), this._idx.concat(all._idx));// super === this.prototype ...
     } else {
       res = new _$(this);
@@ -84,20 +90,27 @@ function _$(obj, quick) {
     return this.reverse();
   }
   
-  //==== optimze below later
-  
-  function filter() {
-    var idx = Array();
-    return new _$(super.filter(arguments));
+  function filter(callback, thisArg) {
+    var it = new _$();
+    _.each(this, function(el, key, arr) {
+      if(callback.call(thisArg, el, key, arr)) {
+        it.push(el);
+      }
+    });
+    return it;
   }
   
-  function map() {
+  function map() {//map in worst case can change keys so recalc
     return new _$(super.map(arguments));
   }
+  
+     //==== optimze below later
   
   function sort() {
     
   }
+  
+  //any more functions?
 }
 
 _$.prototype = Array;
