@@ -4,6 +4,8 @@
 
 function _$(obj, quick) {
   
+  if(_.isFunction(obj)) /* OK? */ ;
+  
   if(quick) {
     this._idx = new Array(quick);
     var inner = this;
