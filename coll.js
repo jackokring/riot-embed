@@ -7,8 +7,8 @@ function _$(obj, quick) {
   if(quick) {
     this._idx = new Array(quick);
     var inner = this;
-    _.each(obj, function(el) {
-      inner._spush(el);
+    _.each(obj, function(el, idx) {
+      inner[idx] = el;
     });
   } else {
     this._idx = new Array();
@@ -17,7 +17,7 @@ function _$(obj, quick) {
       inner.push(el);
     });
   }
-  return res;
+  return this;
   
   function concat(all) {
     var res = new _$(this);
@@ -81,6 +81,7 @@ function _$(obj, quick) {
   }
   
   function filter() {
+    var idx = Array();
     return new _$(super.filter(arguments));
   }
   
