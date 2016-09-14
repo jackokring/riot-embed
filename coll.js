@@ -8,16 +8,14 @@ function _$(obj, quick) {
   
   if(quick) {
     this._idx = new Array(quick);
-    var inner = this;
     _.each(obj, function(el, idx) {
-      inner[idx] = el;
-    });
+      this[idx] = el;
+    }, this);
   } else {
     this._idx = new Array();
-    var inner = this;
     _.each(obj, function(el, idx) {
-      inner.push(el);
-    });
+      this.push(el);
+    }, this);
   }
   return this;
   
@@ -105,8 +103,18 @@ function _$(obj, quick) {
   
      //==== optimze below later
   
-  function sort() {
-    
+  function sort(func) {
+    var rng = _.range(this.length);
+    rng.sort(function(a, b) {
+      func(this[a], this[b]);
+    });
+    var inner = this;
+    var cl = _$(this, this._idx);
+    _.each(rng, function(val, key) {
+      this[key] = cl[val];
+      this._idx[key] = cl._idx[val];
+    }, this);
+    return this;
   }
   
   //any more functions?
