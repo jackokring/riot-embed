@@ -16,8 +16,7 @@ function _$(obj, quick) {
     this._idx = new Array();
     var inner = this;
     _.each(obj, function(el, idx) {
-      inner[idx] = el;
-      inner._idx[idx] = el;
+      inner.push(el);
     });
   }
   return this;
