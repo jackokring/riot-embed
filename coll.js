@@ -17,7 +17,12 @@ function _$(obj, quick) {
       this.push(el);
     }, this);
   }
-  return this;
+  return new Proxy(this, {
+    set: function(obj, prop, val) {
+      obj[prop] = val;
+      obj._idx[prop] = val._i;//OK 
+    }
+  });
   
   function of() {
     return _$(arguments, _.map(arguments, function() {
