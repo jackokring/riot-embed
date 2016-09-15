@@ -103,7 +103,7 @@ function _$(obj, quick, keys, fns) {
   }
   
   function push(el) {
-    if(this.length != this._back[0].length) error(push, 'no push() to a slice().');
+    if(this.length != this._back[0].length) error(push, 'no push() or unshift() to a slice().');
     var len = super.push(el);
     //TODO ...
     _.each(keys, function(val, key) {
