@@ -1,10 +1,10 @@
 //========================================
-// Keyed collection _$  1.0.1
+// Keyed collection _$  1.0.2
 //========================================
 
 function _$(obj, quick, keys, fns) {
   
-  _$.VERSION = "1.0.1";
+  _$.VERSION = "1.0.2";
   
   if(quick) {
     this._back = quick;
@@ -19,9 +19,27 @@ function _$(obj, quick, keys, fns) {
   this._esc = false;
   return new Proxy(this, {
     set: function(obj, prop, val) {
+      if(obj._esc == true) {
+        obj[prop] = val;
+        return;
+      }
+      var old = obj._back[0][obj[prop]];
       obj._back[0][obj[prop]] = val;
       //rebuild quick!
-      
+      var vals = obj._back[0];
+      _.each(obj._back[2], function(v, key) {
+        if(old[key] !== val[key]) { //only fix damaged keys
+          var cur = _.range(obj.length);
+          cur.sort(function(a, b) {
+            var x = 0;
+            while(x == 0 && key < keys.length) {
+               x = fns[key] && fns[key++](vals[a], vals[b]);
+            }
+          });
+          obj._back[1][key] = cur;//store new sort
+          if(key == obj._back[4]) obj._use(key);//retore valid index
+        }
+      });
     }
     get: function(obj, prop) {
       return obj._back[0][obj[prop]];//return indexed
@@ -29,9 +47,10 @@ function _$(obj, quick, keys, fns) {
   });
   
   function _use(idx) {
+    var x = this._back[4] = idx;
     this._esc = true;//escape proxy
     _.each(this, function(el, key) {//has right count
-      this[key] = this._back[1][this._back[4]][key];//indexes, index used, element 
+      this[key] = this._back[1][x][key];//indexes, index used, element 
     }, this);
     this._esc = false;
   }
@@ -50,8 +69,8 @@ function _$(obj, quick, keys, fns) {
         while(x == 0 && key < keys.length) {
            x = fns[key] && fns[key++](vals[a], vals[b]);
         }
-        idx.push(cur);//add an index
       });
+      idx.push(cur);//add an index
     });
     return [vals, idx, keys, fns, 0];//master shared structure of collection state
   }
