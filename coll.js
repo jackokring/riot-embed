@@ -152,9 +152,7 @@ function _$(obj, quick, keys, fns) {
     return new _$(it, this._back);//a slice;
   }
   
-  function map() {
-    error(map, 'consider a library like underscore. This is not an efficient operation.');
-  }
+  /* function map(); */ //lets assume that [] are used, and the prototype is Array so ... OK
   
   function sort() {
     error(sort);
@@ -164,8 +162,6 @@ function _$(obj, quick, keys, fns) {
     suggest = suggest || 'understand this is an indexed sorted collection.';
     throw 'Library _$.' + func.name + '() is not available. Suggest you ' + suggest;
   }
-  
-  //any more functions?
 }
 
 _$.prototype = Array;
