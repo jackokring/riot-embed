@@ -19,9 +19,14 @@ function _$(obj, quick, keys, fns) {
   this._esc = false;
   return new Proxy(this, {
     set: function(obj, prop, val) {
+      if(!_.isNumber(prop)) {
+        obj[prop] = val;//property proper
+        return val;
+      }
+      if(prop > obj.length - 1) error(_$, 'not assign out of bounds. Try push().');
       if(obj._esc == true) {
         obj[prop] = val;
-        return;
+        return val;
       }
       var old = obj._back[0][obj[prop]];
       obj._back[0][obj[prop]] = val;
@@ -81,6 +86,7 @@ function _$(obj, quick, keys, fns) {
   }
   
   function concat(all) {// or ONE _$ to make a collection of both
+    //TODO ...
     var res;
     if(all instanceof _$) {// N.B.
       res = new _$(super.concat(all), this._idx.concat(all._idx));// super === this.prototype ...
@@ -102,8 +108,19 @@ function _$(obj, quick, keys, fns) {
   }
   
   function push(el) {
-    this._idx.push(el._i);//becomes finable
-    return super.push(el);
+    var len = super.push(el);
+    //TODO ...
+    _.each(keys, function(val, key) {
+      var cur = _.range(len);
+      cur.sort(function(a, b) {
+        var x = 0;
+        while(x == 0 && key < keys.length) {
+           x = fns[key] && fns[key++](vals[a], vals[b]);
+        }
+      });
+      idx.push(cur);//add an index
+    });
+    return len;
   }
   
   function pop() {
