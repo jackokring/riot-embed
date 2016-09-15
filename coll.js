@@ -143,13 +143,13 @@ function _$(obj, quick, keys, fns) {
   }
   
   function filter(callback, thisArg) {
-    var it = new _$();
+    var it = [];
     _.each(this, function(el, key, arr) {
-      if(callback.call(thisArg, el, key, arr)) {
+      if(callback.call(thisArg, this._back[0][el], key, arr)) {
         it.push(el);
       }
     });
-    return it;
+    return new _$(it, this._back);//a slice;
   }
   
   function map() {
