@@ -135,13 +135,7 @@ function _$(obj, quick, keys, fns) {
   }
   
   function splice() {
-    var x = Array.from(arguments);
-    _.map(x, function(el, key) {
-      if(key < 2) return el;
-      return el._i;
-    });
-    this._idx.splice(x);
-    return super.splice(arguments);
+    error(splice, 'convert to concat() and slice(). Sorted!');
   }
   
   function reverse() {
