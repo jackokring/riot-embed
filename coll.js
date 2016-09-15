@@ -108,17 +108,30 @@ function _$(obj, quick, keys, fns) {
     if(this.length != this._back[0].length) error(push, 'no push() or unshift() to a slice().');
     var len = super.push(el);
     //TODO ...
-    _.each(keys, function(val, key) {
-      var cur = _.range(len);
-      cur.sort(function(a, b) {
-        var x = 0;
-        while(x == 0 && key < keys.length) {
-           x = fns[key] && fns[key++](vals[a], vals[b]);
-        }
-      });
-      idx.push(cur);//add an index
-    });
+
     return len;
+  }
+  
+  function _insert(key, start, end) {
+    var idx = this._back[1][key];
+    var code = idx.length;
+    var fns = this._back[3];
+    var num = this._back[1].length;
+    var vals = this._back[0];
+    var mid = start + (end - start) >> 1;
+    var x = 0;
+    while(x == 0 && key < num) {
+       x = fns[key] && fns[key++](vals[mid], vals[code]);
+    }
+    if(x == 0) {
+      idx.splice(mid, 0, code);
+      return true;
+    }
+    if(x > 0) {
+      this._insert(key);
+    } else {
+      this._insert(key);
+    }
   }
   
   function pop() {
