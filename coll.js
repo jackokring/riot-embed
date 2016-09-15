@@ -52,10 +52,12 @@ function _$(obj, quick, keys, fns) {
   });
   
   function _use(idx) {
-    var x = this._back[4] = idx;
+    var old = this._back[4];
+    if(old == idx) return;
+    this._back[4] = idx;
     this._esc = true;//escape proxy
     _.each(this, function(el, key) {//has right count
-      this[key] = this._back[1][x][key];//indexes, index used, element 
+      this[key] = this._back[1][idx][key];//indexes, index used, element 
     }, this);
     this._esc = false;
   }
