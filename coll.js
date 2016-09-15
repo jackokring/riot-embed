@@ -120,17 +120,26 @@ function _$(obj, quick, keys, fns) {
     var vals = this._back[0];
     var mid = start + (end - start) >> 1;
     var x = 0;
+    var sz = end - start;
     while(x == 0 && key < num) {
        x = fns[key] && fns[key++](vals[mid], vals[code]);
     }
-    if(x == 0) {
+    if(x == 0 || sz == 0) {
       idx.splice(mid, 0, code);
       return true;
     }
     if(x > 0) {
-      this._insert(key);
+      if(sz == 1) {
+        idx.splice(end, 0, code);
+        return;
+      }
+      this._insert(key, mid, end);
     } else {
-      this._insert(key);
+      if(sz == 1) {
+        idx.splice(start, 0, code);
+        return;
+      }
+      this._insert(key, start, mid);
     }
   }
   
