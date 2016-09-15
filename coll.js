@@ -76,6 +76,7 @@ function _$(obj, quick, keys, fns) {
   }
   
   function use(name) {
+    if(this.length != this._back[0].length) error(use, 'use use() before slice().');
     this._use(this._back[2].findIndex(name));
   }
   
@@ -106,18 +107,15 @@ function _$(obj, quick, keys, fns) {
   }
   
   function pop() {
-    this._idx.pop();//make not found
-    return super.pop();
+    return this._back[0][super.pop()];
   }
   
-  function shift() {//synchronized auto
-    this._idx.shift();
-    return super.shift();
+  function shift() {
+    return this._back[0][super.shift()];
   }
   
   function unshift(el) {
-    this._idx.unshift(el._i);
-    return super.unshift(el);
+    return this.push(el);//it's the same for this collection
   }
   
   function slice() {
