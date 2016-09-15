@@ -107,8 +107,9 @@ function _$(obj, quick, keys, fns) {
   function push(el) {
     if(this.length != this._back[0].length) error(push, 'no push() or unshift() to a slice().');
     var len = super.push(el);
-    //TODO ...
-
+    _.times(this._back[1].length, function(n) {
+      this._insert(n, 0, len - 1);//inset log(n)
+    }, this);
     return len;
   }
   
