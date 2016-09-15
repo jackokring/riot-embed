@@ -85,17 +85,12 @@ function _$(obj, quick, keys, fns) {
     this._use(this._back[2].findIndex(name));
   }
   
-  function concat(all) {// or ONE _$ to make a collection of both
-    //TODO ...
-    var res;
-    if(all instanceof _$) {// N.B.
-      res = new _$(super.concat(all), this._idx.concat(all._idx));// super === this.prototype ...
-    } else {
-      res = new _$(this);
-      _.each(arguments, function(el) {
-        res.push(el);
-      });
-    }
+  function concat() {
+    if(this.length != this._back[0].length) error(concat, 'no concat() to a slice().');
+    var res = new _$(this, this._back);//make new array
+    _.each(arguments, function(el) {
+      this.push(el);
+    }, this);
     return res;
   }
   
