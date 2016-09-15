@@ -12,20 +12,29 @@ function _$(obj, quick, keys, fns) {
       this[idx] = el;
     }, this);
   } else {
+    this.length = obj.length;//size
     this._back = this._build(obj, keys, fns);
-    _.each(obj, function(el, key) {//has right count
-      this[key] = this._back[1][1][key];//index, first, element 
-    }, this);
+    this._use(0);//first index
   }
+  this._esc = false;
   return new Proxy(this, {
     set: function(obj, prop, val) {
-      obj[prop] = val;
-      obj._idx[prop] = val._i;//OK 
+      obj._back[0][obj[prop]] = val;
+      //rebuild quick!
+      
     }
     get: function(obj, prop) {
       return obj._back[0][obj[prop]];//return indexed
     }
   });
+  
+  function _use(idx) {
+    this._esc = true;//escape proxy
+    _.each(this, function(el, key) {//has right count
+      this[key] = this._back[1][this._back[4]][key];//indexes, index used, element 
+    }, this);
+    this._esc = false;
+  }
   
   function _build(obj, keys, fns) {
     var vals = [];
@@ -44,7 +53,7 @@ function _$(obj, quick, keys, fns) {
         idx.push(cur);//add an index
       });
     });
-    return [vals, idx];//master shared structure of collection state
+    return [vals, idx, keys, fns, 0];//master shared structure of collection state
   }
   
   //OK to here!!
