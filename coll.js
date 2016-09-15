@@ -1,20 +1,20 @@
 //========================================
-// Keyed collection _$  1.0.0
+// Keyed collection _$  1.0.1
 //========================================
 
-function _$(obj, quick) {
+function _$(obj, quick, keys, fns) {
   
-  _$.VERSION = "1.0.0";
+  _$.VERSION = "1.0.1";
   
   if(quick) {
-    this._idx = new Array(quick);
+    this._back = quick;
     _.each(obj, function(el, idx) {
       this[idx] = el;
     }, this);
   } else {
-    this._idx = new Array();
-    _.each(obj, function(el, idx) {
-      this.push(el);
+    this._back = this._build(obj, keys, fns);
+    _.each(obj, function(el, key) {//has right count
+      this[key] = this._back[1][1][key];//index, first, element 
     }, this);
   }
   return new Proxy(this, {
@@ -22,7 +22,32 @@ function _$(obj, quick) {
       obj[prop] = val;
       obj._idx[prop] = val._i;//OK 
     }
+    get: function(obj, prop) {
+      return obj._back[0][obj[prop]];//return indexed
+    }
   });
+  
+  function _build(obj, keys, fns) {
+    var vals = [];
+    _.each(obj, function(el) {
+      vals.push(el);
+    });
+    var len = vals.length;
+    var idx = [];
+    _.each(keys, function(val, key) {
+      var cur = _.range(len);
+      cur.sort(function(a, b) {
+        var x = 0;
+        while(x == 0 && key < keys.length) {
+           x = fns[key] && fns[key++](vals[a], vals[b]);
+        }
+        idx.push(cur);//add an index
+      });
+    });
+    return [vals, idx];//master shared structure of collection state
+  }
+  
+  //OK to here!!
   
   function of() {
     return _$(arguments, _.map(arguments, function() {
