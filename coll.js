@@ -75,13 +75,11 @@ function _$(obj, quick, keys, fns) {
     return [vals, idx, keys, fns, 0];//master shared structure of collection state
   }
   
-  //OK to here!!
-  
-  function of() {
-    return _$(arguments, _.map(arguments, function() {
-      return undefined;
-    }));
+  function use(name) {
+    this._use(this._back[2].findIndex(name));
   }
+  
+  //OK to here!!
   
   function concat(all) {// or ONE _$ to make a collection of both
     var res;
@@ -127,7 +125,7 @@ function _$(obj, quick, keys, fns) {
   }
   
   function slice() {
-    return new _$(this.slice(arguments), this._idx.slice(arguments));
+    return new _$(super.slice(arguments), this._back);//quick
   }
   
   function splice() {
@@ -159,20 +157,13 @@ function _$(obj, quick, keys, fns) {
     return new _$(super.map(arguments));
   }
   
-     //==== optimze below later
+  function sort() {
+    error('sort');
+  }
   
-  function sort(func) {
-    var rng = _.range(this.length);
-    rng.sort(function(a, b) {
-      func(this[a], this[b]);
-    });
-    var inner = this;
-    var cl = _$(this, this._idx);
-    _.each(rng, function(val, key) {
-      this[key] = cl[val];
-      this._idx[key] = cl._idx[val];
-    }, this);
-    return this;
+  function error(func, suggest) {
+    suggest = suggest || 'understand this is an indexed sorted collection.';
+    throw 'Library _$.' + func.name + '() is not available. Suggest you ' + suggest;
   }
   
   //any more functions?
