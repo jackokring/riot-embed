@@ -1,10 +1,21 @@
 //========================================
-// Keyed collection _$  1.0.2
+// Keyed collection _$  1.0.4
 //========================================
-
+// Stores an array with sorted indexing
+// Excellent. The fast insert time while
+// having an excellent ordering allows
+// pop() and shift() to iterate. Use reset()
+// to get back the whole collection.
+// use() restores a particular key sort
+// order, and restores all elements of
+// the collection ready to splice again.
 function _$(obj, quick, keys, fns) {
   
-  _$.VERSION = "1.0.2";
+  _$.VERSION = "1.0.4";
+  
+  function _bma(a, b) {
+    return a.toString().localCompare(b.toString());
+  }
   
   if(quick) {
     this._back = quick;
@@ -13,6 +24,9 @@ function _$(obj, quick, keys, fns) {
     }, this);
   } else {
     this.length = obj.length;//size
+    _.each(fns, function(val, key, all) {
+      if(!val) all[key] = _bma;
+    });
     this._back = this._build(obj, keys, fns);
     this._use(0);//first index
   }
@@ -38,7 +52,7 @@ function _$(obj, quick, keys, fns) {
           cur.sort(function(a, b) {
             var x = 0;
             while(x == 0 && key < keys.length) {
-               x = fns[key] && fns[key++](vals[a], vals[b]);
+               x = fns[key++](vals[a], vals[b]);
             }
           });
           obj._back[1][key] = cur;//store new sort
@@ -52,8 +66,6 @@ function _$(obj, quick, keys, fns) {
   });
   
   function _use(idx) {
-    var old = this._back[4];
-    if(old == idx) return;
     this._back[4] = idx;
     this._esc = true;//escape proxy
     _.each(this, function(el, key) {//has right count
@@ -74,7 +86,7 @@ function _$(obj, quick, keys, fns) {
       cur.sort(function(a, b) {
         var x = 0;
         while(x == 0 && key < keys.length) {
-           x = fns[key] && fns[key++](vals[a], vals[b]);
+           x = fns[key++](vals[a], vals[b]);
         }
       });
       idx.push(cur);//add an index
@@ -83,7 +95,6 @@ function _$(obj, quick, keys, fns) {
   }
   
   function use(name) {
-    if(this.length != this._back[0].length) error(use, 'use use() before slice().');
     this._use(this._back[2].findIndex(name));
   }
   
@@ -123,7 +134,7 @@ function _$(obj, quick, keys, fns) {
     var x = 0;
     var sz = end - start;
     while(x == 0 && key < num) {
-       x = fns[key] && fns[key++](vals[mid], vals[code]);
+       x = fns[key++](vals[mid], vals[code]);
     }
     if(x == 0 || sz == 0) {
       idx.splice(mid, 0, code);
