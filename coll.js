@@ -9,6 +9,12 @@
 // use() restores a particular key sort
 // order, and restores all elements of
 // the collection ready to splice again.
+
+//TODO: Make an n-tree fixed depth SpliceArray for O(1) splice()
+//Extend filter()
+//Formulate the most efficient delete strategy
+
+
 function _$(obj, quick, keys, fns) {
   
   _$.VERSION = "1.0.5";
