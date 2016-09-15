@@ -1,5 +1,5 @@
 //========================================
-// Keyed collection _$  1.0.4
+// Keyed collection _$  1.0.5
 //========================================
 // Stores an array with sorted indexing
 // Excellent. The fast insert time while
@@ -11,10 +11,10 @@
 // the collection ready to splice again.
 function _$(obj, quick, keys, fns) {
   
-  _$.VERSION = "1.0.4";
+  _$.VERSION = "1.0.5";
   
   function _bma(a, b) {
-    return a.toString().localCompare(b.toString());
+    return JSON.stringify(a).localCompare(JSON.stringify(b));
   }
   
   if(quick) {
