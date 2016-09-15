@@ -79,8 +79,6 @@ function _$(obj, quick, keys, fns) {
     this._use(this._back[2].findIndex(name));
   }
   
-  //OK to here!!
-  
   function concat(all) {// or ONE _$ to make a collection of both
     var res;
     if(all instanceof _$) {// N.B.
@@ -94,14 +92,12 @@ function _$(obj, quick, keys, fns) {
     return res;
   }
   
-  function fill(el, start, end) {
-    this._idx.fill(el._i, start, end);
-    super.fill(arguments);
+  function fill() {
+    error(fill);
   }
   
   function copyWithin() {
-    this._idx.copyWithin(arguments);
-    super.copyWithin(arguments);
+    error(copyWithin);
   }
   
   function push(el) {
@@ -139,8 +135,7 @@ function _$(obj, quick, keys, fns) {
   }
   
   function reverse() {
-    this._idx.reverse();
-    return this.reverse();
+    error(reverse);
   }
   
   function filter(callback, thisArg) {
@@ -153,12 +148,12 @@ function _$(obj, quick, keys, fns) {
     return it;
   }
   
-  function map() {//map in worst case can change keys so recalc
-    return new _$(super.map(arguments));
+  function map() {
+    error(map, 'consider a library like underscore. This is not an efficient operation.');
   }
   
   function sort() {
-    error('sort');
+    error(sort);
   }
   
   function error(func, suggest) {
