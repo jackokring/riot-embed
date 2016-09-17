@@ -1,5 +1,5 @@
 //========================================
-// Keyed collection _$  1.0.7
+// Keyed collection _$  1.0.8
 //========================================
 // Stores an array with sorted indexing
 // Excellent. The fast insert time while
@@ -17,7 +17,7 @@
 
 function _$(obj, quick, keys, fns) {
   
-  _$.VERSION = "1.0.7";
+  _$.VERSION = "1.0.8";
   
   function _bma(a, b) {
     if(_.isUndefined(a) && _.isUndefined(b)) return 0;
@@ -55,6 +55,7 @@ function _$(obj, quick, keys, fns) {
   return new Proxy(this, {
     set: function(obj, prop, val) {
       if(!_.isNumber(prop)) {
+        if(prop === 'length') error(_$, 'not assign new length. Try push().');
         obj[prop] = val;//property proper
         return val;
       }
@@ -69,7 +70,7 @@ function _$(obj, quick, keys, fns) {
       var vals = obj._back[0];
       _.each(obj._back[2], function(v, key) {
         if(old[key] !== val[key]) { //only fix damaged keys
-          var cur = _.range(obj.length);
+          var cur = new SpliceArray(obj.length);//an optimal fill
           cur.sort(function(a, b) {
             var x = 0;
             while(x == 0 && key < keys.length) {
@@ -82,6 +83,10 @@ function _$(obj, quick, keys, fns) {
       });
     }
     get: function(obj, prop) {
+      if(!_.isNumber(prop)) {
+        if(prop === 'length') return obj.length;
+        return obj[prop];
+      }
       return obj._back[0][obj[prop]];//return indexed
     }
   });
@@ -96,12 +101,12 @@ function _$(obj, quick, keys, fns) {
   }
   
   function _build(obj, keys, fns) {
-    var vals = [];
+    var vals = new SpliceArray();
     _.each(obj, function(el) {
       vals.push(el);
     });
     var len = vals.length;
-    var idx = [];
+    var idx = new SpliceArray();
     _.each(keys, function(val, key) {
       var cur = _.range(len);
       cur.sort(function(a, b) {
@@ -223,4 +228,4 @@ function _$(obj, quick, keys, fns) {
   }
 }
 
-_$.prototype = Array;
+_$.prototype = SpliceArray;
