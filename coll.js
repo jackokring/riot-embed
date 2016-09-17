@@ -17,7 +17,7 @@
 
 function _$(obj, quick, keys, fns) {
   
-  _$.VERSION = "1.0.9";
+  _$.VERSION = "1.0.9a";
   
   function _bma(a, b) {
     if(_.isUndefined(a) && _.isUndefined(b)) return 0;
@@ -141,7 +141,7 @@ function _$(obj, quick, keys, fns) {
     var len = this._back[0].push(el);
     _.times(this._back[1].length, function(n) {
       var idx = this._insert(n, 0, len - 1);//inset log(n)
-      if(n == this._back[4]) super.splice(idx, 0, this.length);
+      if(n == this._back[4]) this.prototype.splice.call(this, idx, 0, this.length);
     }, this);
     return len;
   }
@@ -178,11 +178,11 @@ function _$(obj, quick, keys, fns) {
   }
   
   function pop() {
-    return this._back[0][super.pop()];
+    return this._back[0][this.prototype.pop.apply(this)];
   }
   
   function shift() {
-    return this._back[0][super.shift()];
+    return this._back[0][this.prototype.shift.apply(this)];
   }
   
   function unshift(el) {
@@ -190,7 +190,7 @@ function _$(obj, quick, keys, fns) {
   }
   
   function slice() {
-    return new _$(super.slice(arguments), this._back);//quick
+    return new _$(this.prototype.slice.apply(this, arguments), this._back);//quick
   }
   
   function splice() {
