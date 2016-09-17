@@ -5,7 +5,7 @@
 // An int argument makes a range array
 // of length.
 
-function SpliceArray(obj, quick, keys, fns) {
+function SpliceArray(obj) {
   
   SpliceArray.VERSION = "1.0.0";
   
@@ -37,22 +37,7 @@ function SpliceArray(obj, quick, keys, fns) {
       }
       var old = obj._back[0][obj[prop]];
       obj._back[0][obj[prop]] = val;
-      //rebuild quick!
-      var vals = obj._back[0];
-      _.each(obj._back[2], function(v, key) {
-        if(old[key] !== val[key]) { //only fix damaged keys
-          var cur = _.range(obj.length);
-          cur.sort(function(a, b) {
-            var x = 0;
-            while(x == 0 && key < keys.length) {
-               x = fns[key++](vals[a], vals[b]);
-            }
-          });
-          obj._back[1][key] = cur;//store new sort
-          if(key == obj._back[4]) obj._use(key);//retore valid index
-        }
-      });
-    }
+    },
     get: function(obj, prop) {
       if(prop === 'length') ??
       return obj._back[0][obj[prop]];//return indexed
@@ -66,14 +51,6 @@ function SpliceArray(obj, quick, keys, fns) {
       this.push(el);
     }, res);
     return res;
-  }
-  
-  function fill() {
-    error(fill);
-  }
-  
-  function copyWithin() {
-    error(copyWithin);
   }
   
   function push(el) {
@@ -98,37 +75,8 @@ function SpliceArray(obj, quick, keys, fns) {
     return this.push(el);//it's the same for this collection
   }
   
-  function slice() {
-    return new _$(super.slice(arguments), this._back);//quick
-  }
-  
   function splice() {
     error(splice, 'convert to concat() and slice(). Sorted!');
-  }
-  
-  function reverse() {
-    error(reverse);
-  }
-  
-  function filter(callback, thisArg) {
-    var it = [];
-    _.each(this, function(el, key, arr) {
-      if(callback.call(thisArg, this._back[0][el], key, arr)) {
-        it.push(el);
-      }
-    });
-    return new _$(it, this._back);//a slice;
-  }
-  
-  /* function map(); */ //lets assume that [] are used, and the prototype is Array so ... OK
-  
-  function sort() {
-    error(sort);
-  }
-  
-  function error(func, suggest) {
-    suggest = suggest || 'understand this is an indexed sorted collection.';
-    throw 'Library _$.' + func.name + '() is not available. Suggest you ' + suggest;
   }
 }
 
