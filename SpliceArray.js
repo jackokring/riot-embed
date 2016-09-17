@@ -17,10 +17,17 @@ function SpliceArray(obj) {
     
   }
   
-  this._len = obj.length;
-  _.each(obj, function(el, idx) {
-    this._set(idx, el);
-  }, this);
+  if(_.isNumber(obj)) {
+    this._len = obj;
+    _.times(obj, function(n) {
+      this._set(n, n);
+    }, this);
+  } else {
+    this._len = obj.length;
+    _.each(obj, function(el, idx) {
+      this._set(idx, el);
+    }, this);
+  }
   return new Proxy(this, {
     set: function(obj, prop, val) {
       if(!_.isNumber(prop)) {
