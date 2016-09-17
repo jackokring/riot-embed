@@ -26,6 +26,7 @@ function SpliceArray(obj, quick, keys, fns) {
   return new Proxy(this, {
     set: function(obj, prop, val) {
       if(!_.isNumber(prop)) {
+        if(prop === 'length') ??
         obj[prop] = val;//property proper
         return val;
       }
@@ -53,6 +54,7 @@ function SpliceArray(obj, quick, keys, fns) {
       });
     }
     get: function(obj, prop) {
+      if(prop === 'length') ??
       return obj._back[0][obj[prop]];//return indexed
     }
   });
