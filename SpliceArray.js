@@ -9,20 +9,13 @@ function SpliceArray(obj) {
   
   SpliceArray.VERSION = "1.0.0";
   
-  if(quick) {
-    this._back = quick;
-    _.each(obj, function(el, idx) {
-      this[idx] = el;
-    }, this);
-  } else {
-    this.length = obj.length;//size
-    _.each(fns, function(val, key, all) {
-      if(!val) all[key] = _bma;
-    });
-    this._back = this._build(obj, keys, fns);
-    this._use(0);//first index
-  }
-  this._esc = false;
+  function _set(idx, val) {
+    
+  } 
+  this._len = obj.length;
+  _.each(obj, function(el, idx) {
+    this._set(idx, el);
+  }, this);
   return new Proxy(this, {
     set: function(obj, prop, val) {
       if(!_.isNumber(prop)) {
@@ -30,13 +23,8 @@ function SpliceArray(obj) {
         obj[prop] = val;//property proper
         return val;
       }
-      if(prop > obj.length - 1) error(_$, 'not assign out of bounds. Try push().');
-      if(obj._esc == true) {
-        obj[prop] = val;
-        return val;
-      }
-      var old = obj._back[0][obj[prop]];
-      obj._back[0][obj[prop]] = val;
+      obj._set(prop, val);
+      return val;
     },
     get: function(obj, prop) {
       if(prop === 'length') ??
@@ -45,8 +33,7 @@ function SpliceArray(obj) {
   });
   
   function concat() {
-    if(this.length != this._back[0].length) error(concat, 'no concat() to a slice().');
-    var res = new _$(this, this._back);//make new array
+    var res = new SpliceArray(this);//make new array
     _.each(arguments, function(el) {
       this.push(el);
     }, res);
