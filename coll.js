@@ -13,7 +13,6 @@
 //TODO: Make an n-tree fixed depth SpliceArray for O(1) splice()
 //Extend filter()
 //Formulate the most efficient delete strategy
-//make default comparator more useful
 
 
 function _$(obj, quick, keys, fns) {
@@ -21,10 +20,21 @@ function _$(obj, quick, keys, fns) {
   _$.VERSION = "1.0.7";
   
   function _bma(a, b) {
+    if(_.isUndefined(a) && _.isUndefined(b)) return 0;
+    if(_.isUndefined(a)) return 1;
+    if(_.isUndefined(b)) return -1;
     if(_.isFinite(a) && _.isFinite(b)) return b - a;
+    if(_.isString(a) && _.isString(b)) return a.localCompare(b);
     if(_.isObject(a) && _.isObject(b)) {
-      
+      var tot = _.reduce(_.keys(a), function(memo, el, key) {
+        memo += _bma(el, b[key]);
+      }, 0);
+      tot += _.reduce(_.keys(b), function(memo, el, key) {
+        memo += _bma(a[key], el);
+      }, 0);
+      return tot;//a property compare set
     }
+    if(_.isArray(a) && _.isArray(b)) return b.length - a.length;
     return JSON.stringify(a).localCompare(JSON.stringify(b));
   }
   
