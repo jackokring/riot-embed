@@ -1,5 +1,5 @@
 //========================================
-// Keyed collection _$  1.0.5
+// Keyed collection _$  1.0.6
 //========================================
 // Stores an array with sorted indexing
 // Excellent. The fast insert time while
@@ -18,7 +18,7 @@
 
 function _$(obj, quick, keys, fns) {
   
-  _$.VERSION = "1.0.5";
+  _$.VERSION = "1.0.6";
   
   function _bma(a, b) {
     return JSON.stringify(a).localCompare(JSON.stringify(b));
@@ -124,9 +124,10 @@ function _$(obj, quick, keys, fns) {
   
   function push(el) {
     if(this.length != this._back[0].length) error(push, 'no push() or unshift() to a slice().');
-    var len = super.push(el);
+    var len = this._back[0].push(el);
     _.times(this._back[1].length, function(n) {
-      this._insert(n, 0, len - 1);//inset log(n)
+      var idx = this._insert(n, 0, len - 1);//inset log(n)
+      if(n == this._back[4]) super.splice(idx, 0, this.length);
     }, this);
     return len;
   }
@@ -145,20 +146,20 @@ function _$(obj, quick, keys, fns) {
     }
     if(x == 0 || sz == 0) {
       idx.splice(mid, 0, code);
-      return true;
+      return mid;
     }
     if(x > 0) {
       if(sz == 1) {
         idx.splice(end, 0, code);
-        return;
+        return end;
       }
-      this._insert(key, mid, end);
+      return this._insert(key, mid, end);
     } else {
       if(sz == 1) {
         idx.splice(start, 0, code);
-        return;
+        return start;
       }
-      this._insert(key, start, mid);
+      return this._insert(key, start, mid);
     }
   }
   
