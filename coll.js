@@ -1,5 +1,5 @@
 //========================================
-// Keyed collection _$  1.0.6
+// Keyed collection _$  1.0.7
 //========================================
 // Stores an array with sorted indexing
 // Excellent. The fast insert time while
@@ -18,9 +18,13 @@
 
 function _$(obj, quick, keys, fns) {
   
-  _$.VERSION = "1.0.6";
+  _$.VERSION = "1.0.7";
   
   function _bma(a, b) {
+    if(_.isFinite(a) && _.isFinite(b)) return b - a;
+    if(_.isObject(a) && _.isObject(b)) {
+      
+    }
     return JSON.stringify(a).localCompare(JSON.stringify(b));
   }
   
@@ -110,7 +114,7 @@ function _$(obj, quick, keys, fns) {
     var res = new _$(this, this._back);//make new array
     _.each(arguments, function(el) {
       this.push(el);
-    }, this);
+    }, res);
     return res;
   }
   
