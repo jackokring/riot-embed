@@ -1,5 +1,5 @@
 //========================================
-// Keyed collection _$  1.0.8
+// Keyed collection _$  1.0.9
 //========================================
 // Stores an array with sorted indexing
 // Excellent. The fast insert time while
@@ -17,7 +17,7 @@
 
 function _$(obj, quick, keys, fns) {
   
-  _$.VERSION = "1.0.8";
+  _$.VERSION = "1.0.9";
   
   function _bma(a, b) {
     if(_.isUndefined(a) && _.isUndefined(b)) return 0;
@@ -51,7 +51,7 @@ function _$(obj, quick, keys, fns) {
     this._back = this._build(obj, keys, fns);
     this._use(0);//first index
   }
-  this._esc = false;
+  
   return new Proxy(this, {
     set: function(obj, prop, val) {
       if(!_.isNumber(prop)) {
@@ -60,10 +60,6 @@ function _$(obj, quick, keys, fns) {
         return val;
       }
       if(prop > obj.length - 1) error(_$, 'not assign out of bounds. Try push().');
-      if(obj._esc == true) {
-        obj[prop] = val;
-        return val;
-      }
       var old = obj._back[0][obj[prop]];
       obj._back[0][obj[prop]] = val;
       //rebuild quick!
@@ -93,11 +89,9 @@ function _$(obj, quick, keys, fns) {
   
   function _use(idx) {
     this._back[4] = idx;
-    this._esc = true;//escape proxy
     _.each(this, function(el, key) {//has right count
-      this[key] = this._back[1][idx][key];//indexes, index used, element 
+      super[key] = this._back[1][idx][key];//indexes, index used, element 
     }, this);
-    this._esc = false;
   }
   
   function _build(obj, keys, fns) {
