@@ -13,6 +13,7 @@
 //TODO: Make an n-tree fixed depth SpliceArray for O(1) splice()
 //Extend filter()
 //Formulate the most efficient delete strategy
+//make default comparator more useful
 
 
 function _$(obj, quick, keys, fns) {
