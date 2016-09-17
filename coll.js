@@ -81,7 +81,7 @@ function _$(obj, quick, keys, fns) {
           if(key == obj._back[4]) obj._use(key);//retore valid index
         }
       });
-    }
+    },
     get: function(obj, prop) {
       if(!_.isNumber(prop)) {
         if(prop === 'length') return obj.length;
