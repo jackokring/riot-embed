@@ -2,7 +2,8 @@
 // SpliceArray  0.0.0
 //========================================
 // Stores an array optimized for splice()
-
+// An int argument makes a range array
+// of length.
 
 function SpliceArray(obj, quick, keys, fns) {
   
