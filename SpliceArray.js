@@ -11,7 +11,12 @@ function SpliceArray(obj) {
   
   function _set(idx, val) {
     
-  } 
+  }
+  
+  function _get(idx) {
+    
+  }
+  
   this._len = obj.length;
   _.each(obj, function(el, idx) {
     this._set(idx, el);
@@ -27,8 +32,11 @@ function SpliceArray(obj) {
       return val;
     },
     get: function(obj, prop) {
-      if(prop === 'length') ??
-      return obj._back[0][obj[prop]];//return indexed
+      if(!_.isNumber(prop)) {
+        if(prop === 'length') return obj._len;
+        return obj[prop];
+      }
+      return obj._get(prop);
     }
   });
   
