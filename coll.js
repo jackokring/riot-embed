@@ -90,7 +90,8 @@ function _$(obj, quick, keys, fns) {
   function _use(idx) {
     this._back[4] = idx;
     _.each(this, function(el, key) {//has right count
-      super[key] = this._back[1][idx][key];//indexes, index used, element 
+      //access defined so as to avoid amiguity in super class
+      this[key] = this._back[1][idx][key];//indexes, index used, element 
     }, this);
   }
   
